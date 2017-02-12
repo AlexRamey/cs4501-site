@@ -1,0 +1,9 @@
+models:
+    image: tp33/django
+    external_links:
+      -  mysql:db
+    volumes:
+      - ~/cs4501/app:/app
+    ports:
+      - "8001:8000"
+    command: bash -c "python /app/isa_site/manage.py runserver 0.0.0.0:8000"
