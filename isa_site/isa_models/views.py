@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 from isa_models.models import User, Category, Condition, Product, ProductSnapshot, Order
 
@@ -40,11 +40,31 @@ def productsnapshot(request, productsnapshot_id):
     return json_response([productsnapshot])
 
 def categories(request):
-    return json_response(Category.objects.all())
+    if request.method == "POST":
+        if "name" in request.POST:
+            # CREATE 
+            result = Category.objects.create(name=request.POST["name"])
+            return json_response([result]) 
+        return HttpResponse(status=507)    
+    elif request.method == "GET":
+        return json_response(Category.objects.all())
+    else:
+        raise Http404("Invalid HTTP Method (must be GET or POST).")
 
 def category(request, category_id):
-    category = Category.objects.get(pk=category_id)
-    return json_response([category])
+    if request.method == "POST":
+        if "name" in request.POST:
+            # Update
+            result = Category.objects.filter(pk=category_id).update(name=request.POST["name"])
+            if (result == 1):
+                return json_response(Category.objects.filter(pk=category_id))
+            
+        return HttpResponse(status=507)
+    elif request.method == "GET":    
+        category = Category.objects.get(pk=category_id)
+        return json_response([category])
+    else:
+        raise Http404("Invalid ...")
 
 def conditions(request):
     return json_response(Condition.objects.all())
