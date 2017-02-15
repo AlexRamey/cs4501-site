@@ -2,6 +2,9 @@ ramey/
 .DS_Store
 isa_site/.idea/
 
+# Migrations
+isa_site/isa_models/migrations/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 isa_site/isa_models/__pycache__

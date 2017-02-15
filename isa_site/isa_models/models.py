@@ -14,30 +14,38 @@ class User(models.Model):
 	buyer_rating = models.FloatField(default=100.0)
 	seller_rating = models.FloatField(default=100.0)
 
-class Product(models.Model):
-    seller_id = models.ForeignKey(User, on_delete=models.PROTECT)
-    name = models.CharField(max_length=30)
-    description = models.CharField(max_length=80)
-    category_id = models.ForeignKey(Category, on_delete=models.PROTECT)
-    price = models.FloatField()
-    stock = models.int()
-    sold = models.BooleanField()
-    condition_id = models.ForeignKey(Condition, on_delete=models.PROTECT)
-
-class Order(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
-    order_date = models.DateField()
-    delivery_method = models.CharField(max_length=30)
-    tracking_number = models.int()
-    status = models.CharField(max_length=30)
-    seller_id = models.ForeignKey(User, on_delete=models.PROTECT)
-    buyer_id = models.ForeignKey(User, on_delete=models.PROTECT)
-    completed = models.BooleanField()
-    buyer_rating = models.int()
-    seller_rating = models.int()
-
 class Category(models.Model):
     name = models.CharField(max_length=30)
 
 class Condition(models.Model):
     name = models.CharField(max_length=30)
+
+class Product(models.Model):
+    seller = models.ForeignKey(User, on_delete=models.PROTECT)
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    price = models.FloatField()
+    stock = models.IntegerField(default=0)
+    sold = models.BooleanField()
+    condition = models.ForeignKey(Condition, on_delete=models.PROTECT)
+
+class ProductSnapshot(models.Model):
+    seller = models.ForeignKey(User, on_delete=models.PROTECT)
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    price = models.FloatField()
+    condition = models.ForeignKey(Condition, on_delete=models.PROTECT)
+
+class Order(models.Model):
+    product_snapshot = models.ForeignKey(ProductSnapshot, on_delete=models.CASCADE)
+    order_date = models.DateField()
+    delivery_method = models.CharField(max_length=30)
+    tracking_number = models.CharField(max_length=50)
+    status = models.CharField(max_length=30)
+    seller = models.ForeignKey(User, on_delete=models.PROTECT, related_name='seller')
+    buyer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='buyer')
+    completed = models.BooleanField()
+    buyer_rating = models.IntegerField(default=5)
+    seller_rating = models.IntegerField(default=5)
