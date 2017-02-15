@@ -4,4 +4,6 @@ from . import home
 
 urlpatterns = [
     url(r'^$', home.index, name='index'),
+
+    url
 ]
