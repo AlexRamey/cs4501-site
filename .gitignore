@@ -2,6 +2,9 @@ ramey/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
+isa_site/isa_models/__pycache__
+isa_site/isa_site/__pycache__
+
 *.py[cod]
 *$py.class
 
