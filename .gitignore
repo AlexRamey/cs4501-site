@@ -1,4 +1,6 @@
 ramey/
+.DS_Store
+isa_site/.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
