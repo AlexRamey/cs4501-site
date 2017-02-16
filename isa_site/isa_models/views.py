@@ -19,11 +19,30 @@ def user(request, user_id):
     return json_response([user])
 
 def products(request):
-    return json_response(Product.objects.all())
+    if request.method == "POST":
+        if "name" in request.POST:
+            # CREATE 
+            result = Product.objects.create(name=request.POST["name"])
+            return json_response([result]) 
+        return HttpResponse(status=507)    
+    elif request.method == "GET":
+        return json_response(Product.objects.all())
+    else:
+        raise Http404("Invalid HTTP Method (must be GET or POST).")
 
 def product(request, product_id):
-    product = Product.objects.get(pk=product_id)
-    return json_response([product])
+    if request.method == "POST":
+        if "name" in request.POST:
+            # Update
+            result = Product.objects.filter(pk=product_id).update(name=request.POST["name"])
+            if (result == 1):
+                return json_response(Product.objects.filter(pk=product_id))  
+        return HttpResponse(status=507)
+    elif request.method == "GET":    
+        product = Product.objects.get(pk=product_id)
+        return json_response([product])
+    else:
+        raise Http404("Invalid HTTP Method (must be GET or POST).")
 
 def orders(request):
     return json_response(Order.objects.all())
@@ -91,8 +110,6 @@ def condition(request, condition_id):
         return json_response([condition])
     else:
         raise Http404("Invalid HTTP Method (must be GET or POST).")
-
-
 
 def user_orders(request, buyer_id):
     return json_response(Order.objects.all().filter(buyer = buyer_id))
