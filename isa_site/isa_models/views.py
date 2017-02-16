@@ -2,17 +2,27 @@ from django.shortcuts import render
 
 from django.http import JsonResponse, HttpResponse
 
-from isa_models.models import User, Category, Condition, Product, ProductSnapshot, Order
+from isa_models.models import User, UserForm, Category, Condition, Product, ProductForm, ProductSnapshot, ProductSnapshotForm, Order, OrderForm
 
 from django.core import serializers 
 import json
 # Create your views here.
 
 def index(request):
-    return render(request, 'isa_site/index.html')
+    return render(request, 'isa_models/index.html')
 
 def users(request):
-    return json_response(User.objects.all())
+    if request.method == "POST":
+        userForm = UserForm(request.POST)
+        if userForm.is_valid():
+            newUser = userForm.save()
+            return json_response([newUser])  
+        else:
+            return HttpResponse("Invalid Parameters: " + str(userForm.errors), status=507)   
+    elif request.method == "GET":
+        return json_response(User.objects.all())
+    else:
+        raise Http404("Invalid HTTP Method (must be GET or POST).")
 
 def user(request, user_id):
     user = User.objects.get(pk=user_id)
@@ -20,40 +30,51 @@ def user(request, user_id):
 
 def products(request):
     if request.method == "POST":
-        if "name" in request.POST:
-            # CREATE 
-            result = Product.objects.create(name=request.POST["name"])
-            return json_response([result]) 
-        return HttpResponse(status=507)    
+        productForm = ProductForm(request.POST)
+        if productForm.is_valid():
+            newProduct = productForm.save()
+            return json_response([newProduct])  
+        else:
+            return HttpResponse("Invalid Parameters: " + str(productForm.errors), status=507)   
     elif request.method == "GET":
         return json_response(Product.objects.all())
     else:
         raise Http404("Invalid HTTP Method (must be GET or POST).")
 
 def product(request, product_id):
-    if request.method == "POST":
-        if "name" in request.POST:
-            # Update
-            result = Product.objects.filter(pk=product_id).update(name=request.POST["name"])
-            if (result == 1):
-                return json_response(Product.objects.filter(pk=product_id))  
-        return HttpResponse(status=507)
-    elif request.method == "GET":    
-        product = Product.objects.get(pk=product_id)
-        return json_response([product])
-    else:
-        raise Http404("Invalid HTTP Method (must be GET or POST).")
+    product = Product.objects.get(pk=product_id)
+    return json_response([product])
 
 def orders(request):
-    return json_response(Order.objects.all())
+    if request.method == "POST":
+        orderForm = OrderForm(request.POST)
+        if orderForm.is_valid():
+            newOrder = orderForm.save()
+            return json_response([newOrder])  
+        else:
+            return HttpResponse("Invalid Parameters: " + str(orderForm.errors), status=507)   
+    elif request.method == "GET":
+        return json_response(Order.objects.all())
+    else:
+        raise Http404("Invalid HTTP Method (must be GET or POST).")
 
 def order(request, order_id):
     order = Order.objects.get(pk=order_id)
     return json_response([order])
 
 def productsnapshots(request):
-    return json_response(ProductSnapshot.objects.all())
-
+    if request.method == "POST":
+        productSnapshotForm = ProductSnapshotForm(request.POST)
+        if productSnapshotForm.is_valid():
+            newProductSnapshot = productSnapshotForm.save()
+            return json_response([newProductSnapshot])  
+        else:
+            return HttpResponse("Invalid Parameters: " + str(productSnapshotForm.errors), status=507)   
+    elif request.method == "GET":
+        return json_response(ProductSnapshot.objects.all())
+    else:
+        raise Http404("Invalid HTTP Method (must be GET or POST).")
+    
 def productsnapshot(request, productsnapshot_id):
     productsnapshot = ProductSnapshot.objects.get(pk=productsnapshot_id)
     return json_response([productsnapshot])
