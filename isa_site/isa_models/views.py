@@ -64,14 +64,35 @@ def category(request, category_id):
         category = Category.objects.get(pk=category_id)
         return json_response([category])
     else:
-        raise Http404("Invalid ...")
+        raise Http404("Invalid HTTP Method (must be GET or POST).")
 
 def conditions(request):
-    return json_response(Condition.objects.all())
+    if request.method == "POST":
+        if "name" in request.POST:
+            result = Condition.objects.create(name=request.POST["name"])
+            return json_response([result]) 
+        return HttpResponse(status=507)    
+    elif request.method == "GET":
+        return json_response(Condition.objects.all())
+    else:
+        raise Http404("Invalid HTTP Method (must be GET or POST).")
 
 def condition(request, condition_id):
-    condition = Condition.objects.get(pk = condition_id)
-    return json_response([condition])
+    if request.method == "POST":
+        if "name" in request.POST:
+            # Update
+            result = Condition.objects.filter(pk=condition_id).update(name=request.POST["name"])
+            if (result == 1):
+                return json_response(Condition.objects.filter(pk=condition_id))
+            
+        return HttpResponse(status=507)
+    elif request.method == "GET":    
+        condition = Condition.objects.get(pk = condition_id)
+        return json_response([condition])
+    else:
+        raise Http404("Invalid HTTP Method (must be GET or POST).")
+
+
 
 def user_orders(request, buyer_id):
     return json_response(Order.objects.all().filter(buyer = buyer_id))
