@@ -1,13 +1,9 @@
 # cs4501-site
 cs4501 project
 
-# Admin Credentials
-Username: 'root'
-Password: 'rootpassword'
-
 # Models API:
 
-## Endponits:
+## Endpoints:
 - `/isa_models/api/v1/`
 	- **GET**: Models Home Page
 	
