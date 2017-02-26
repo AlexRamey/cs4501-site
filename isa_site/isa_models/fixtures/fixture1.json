@@ -1,0 +1,363 @@
+[
+{
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$30000$LyLBRhepqzqZ$nn9EXhTsbfDLa2T3g6LXTLoy3TnJjRmchNKWvWlzhJw=",
+        "last_login": "2017-02-15T21:41:19.505Z",
+        "is_superuser": true,
+        "username": "root",
+        "first_name": "",
+        "last_name": "",
+        "email": "abr8xq@virginia.edu",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2017-02-15T21:41:06.816Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "ev50sln37sn4nf2v6w3bezq9ijfbpyfe",
+    "fields": {
+        "session_data": "NzgzNjY1MTI5NzI5NGM0MWQ2MmVmOGRiZGI4NTA0ZDg5MDczMThjNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2hhc2giOiI2MGUzNzQ1NmJkNjlhN2MyMGIyYjNmYjdhNmVjMjgwYjg0ODdiODExIn0=",
+        "expire_date": "2017-03-01T21:41:19.509Z"
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 1,
+    "fields": {
+        "email": "lamar@beaches.edu",
+        "password": "password",
+        "first_name": "lamar",
+        "last_name": "smith",
+        "phone_number": "1-234-567-8910",
+        "ship_address": "24 Sunset Lane",
+        "ship_city": "Key Largo",
+        "ship_postal_code": "45678",
+        "ship_country": "USA",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 2,
+    "fields": {
+        "email": "jimmybuffet@coralreefers.edu",
+        "password": "password",
+        "first_name": "jimmy",
+        "last_name": "buffet",
+        "phone_number": "1-098-765-4321",
+        "ship_address": "101 Island Way",
+        "ship_city": "Miami",
+        "ship_postal_code": "22402",
+        "ship_country": "USA",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 3,
+    "fields": {
+        "email": "brucespringsteen@boardwalk.org",
+        "password": "password",
+        "first_name": "bruce",
+        "last_name": "springsteen",
+        "phone_number": "4-321-109-8765",
+        "ship_address": "151 pike street",
+        "ship_city": "trenton",
+        "ship_postal_code": "56789",
+        "ship_country": "USA",
+        "buyer_rating": 80.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 4,
+    "fields": {
+        "email": "test@yahoo.com",
+        "password": "trust",
+        "first_name": "alex",
+        "last_name": "ramey",
+        "phone_number": "4323232134",
+        "ship_address": "100 sunset way",
+        "ship_city": "chattanooga",
+        "ship_postal_code": "45632",
+        "ship_country": "usa",
+        "buyer_rating": 50.0,
+        "seller_rating": 90.4
+    }
+},
+{
+    "model": "isa_models.category",
+    "pk": 1,
+    "fields": {
+        "name": "Music"
+    }
+},
+{
+    "model": "isa_models.category",
+    "pk": 2,
+    "fields": {
+        "name": "Movies"
+    }
+},
+{
+    "model": "isa_models.category",
+    "pk": 3,
+    "fields": {
+        "name": "Games"
+    }
+},
+{
+    "model": "isa_models.category",
+    "pk": 4,
+    "fields": {
+        "name": "Devices"
+    }
+},
+{
+    "model": "isa_models.category",
+    "pk": 5,
+    "fields": {
+        "name": "phones"
+    }
+},
+{
+    "model": "isa_models.category",
+    "pk": 6,
+    "fields": {
+        "name": "tv"
+    }
+},
+{
+    "model": "isa_models.category",
+    "pk": 7,
+    "fields": {
+        "name": "ovens"
+    }
+},
+{
+    "model": "isa_models.condition",
+    "pk": 1,
+    "fields": {
+        "name": "New"
+    }
+},
+{
+    "model": "isa_models.condition",
+    "pk": 2,
+    "fields": {
+        "name": "Good"
+    }
+},
+{
+    "model": "isa_models.condition",
+    "pk": 3,
+    "fields": {
+        "name": "Okay"
+    }
+},
+{
+    "model": "isa_models.condition",
+    "pk": 4,
+    "fields": {
+        "name": "Poor"
+    }
+},
+{
+    "model": "isa_models.condition",
+    "pk": 5,
+    "fields": {
+        "name": "super good"
+    }
+},
+{
+    "model": "isa_models.condition",
+    "pk": 6,
+    "fields": {
+        "name": "super good"
+    }
+},
+{
+    "model": "isa_models.product",
+    "pk": 1,
+    "fields": {
+        "seller": 2,
+        "name": "Pink Guitar",
+        "description": "From my live performance in Key Largo",
+        "category": 1,
+        "price": 300.0,
+        "stock": 1,
+        "sold": false,
+        "condition": 2
+    }
+},
+{
+    "model": "isa_models.product",
+    "pk": 2,
+    "fields": {
+        "seller": 3,
+        "name": "Apple Watch",
+        "description": "Barely used!",
+        "category": 4,
+        "price": 50.0,
+        "stock": 1,
+        "sold": false,
+        "condition": 2
+    }
+},
+{
+    "model": "isa_models.product",
+    "pk": 3,
+    "fields": {
+        "seller": 1,
+        "name": "The Big Lebowski DVD",
+        "description": "The Dude Abides",
+        "category": 2,
+        "price": 8.0,
+        "stock": 50,
+        "sold": false,
+        "condition": 1
+    }
+},
+{
+    "model": "isa_models.product",
+    "pk": 4,
+    "fields": {
+        "seller": 1,
+        "name": "banana",
+        "description": "fruit",
+        "category": 1,
+        "price": 42.0,
+        "stock": 5,
+        "sold": false,
+        "condition": 2
+    }
+},
+{
+    "model": "isa_models.productsnapshot",
+    "pk": 1,
+    "fields": {
+        "seller": 1,
+        "name": "The Big Lebowski DVD",
+        "description": "The Dude Abides",
+        "category": 2,
+        "price": 8.0,
+        "condition": 1
+    }
+},
+{
+    "model": "isa_models.productsnapshot",
+    "pk": 2,
+    "fields": {
+        "seller": 1,
+        "name": "The Big Lebowski DVD",
+        "description": "ON SALE FOR LIMITED TIME",
+        "category": 2,
+        "price": 5.0,
+        "condition": 1
+    }
+},
+{
+    "model": "isa_models.productsnapshot",
+    "pk": 3,
+    "fields": {
+        "seller": 1,
+        "name": "pie",
+        "description": "a sweet product that was on sale",
+        "category": 1,
+        "price": 72.0,
+        "condition": 1
+    }
+},
+{
+    "model": "isa_models.order",
+    "pk": 1,
+    "fields": {
+        "product_snapshot": 1,
+        "order_date": "2017-02-14",
+        "delivery_method": "UPS",
+        "tracking_number": "12345678910",
+        "status": "In Route",
+        "seller": 1,
+        "buyer": 2,
+        "completed": false,
+        "buyer_rating": 5,
+        "seller_rating": 5
+    }
+},
+{
+    "model": "isa_models.order",
+    "pk": 2,
+    "fields": {
+        "product_snapshot": 2,
+        "order_date": "2017-01-10",
+        "delivery_method": "FedEx",
+        "tracking_number": "987654321",
+        "status": "Delivered",
+        "seller": 1,
+        "buyer": 3,
+        "completed": true,
+        "buyer_rating": 5,
+        "seller_rating": 5
+    }
+},
+{
+    "model": "isa_models.order",
+    "pk": 3,
+    "fields": {
+        "product_snapshot": 1,
+        "order_date": "2017-01-15",
+        "delivery_method": "ups",
+        "tracking_number": "564",
+        "status": "delivered",
+        "seller": 2,
+        "buyer": 1,
+        "completed": false,
+        "buyer_rating": 5,
+        "seller_rating": 4
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+        "action_time": "2017-02-15T21:43:44.300Z",
+        "user": [
+            "root"
+        ],
+        "content_type": [
+            "isa_models",
+            "order"
+        ],
+        "object_id": "1",
+        "object_repr": "Order: The Big Lebowski DVD",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+        "action_time": "2017-02-15T21:44:31.070Z",
+        "user": [
+            "root"
+        ],
+        "content_type": [
+            "isa_models",
+            "order"
+        ],
+        "object_id": "2",
+        "object_repr": "Order: The Big Lebowski DVD",
+        "action_flag": 1,
+        "change_message": "[{\"added\": {}}]"
+    }
+}
+]

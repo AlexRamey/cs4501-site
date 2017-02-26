@@ -3,7 +3,7 @@ models:
     external_links:
       -  mysql:db
     volumes:
-      - ~/cs4501/app/cs4501-site/isa_site:/app
+      - ./isa_site:/app
     ports:
       - "8001:8000"
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py loaddata isa_models/fixtures/initial.json && mod_wsgi-express start-server --working-directory /app --reload-on-changes /app/isa_site/wsgi.py"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py loaddata isa_models/fixtures/fixture1.json && mod_wsgi-express start-server --working-directory /app --reload-on-changes /app/isa_site/wsgi.py"
