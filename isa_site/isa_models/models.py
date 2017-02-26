@@ -30,11 +30,21 @@ class Category(models.Model):
     def __str__(self):
         return "Category: " + self.name
 
+class CategoryForm(ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name']
+
 class Condition(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self):
         return "Condition: " + self.name
+
+class ConditionForm(ModelForm):
+    class Meta:
+        model = Condition
+        fields = ['name']
 
 class Product(models.Model):
     seller = models.ForeignKey(User, on_delete=models.PROTECT)

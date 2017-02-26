@@ -1,0 +1,64 @@
+Note: Eventually this file will be converted to Python tests that exercise our API
+
+---------------------------USERS API---------------------------
+
+# 0: List all users
+curl 0.0.0.0:8000/isa_models/api/v1/users/
+
+# 1: CREATE new user (Bad Params)
+curl 0.0.0.0:8000/isa_models/api/v1/users/ -d "first_name=bob"
+
+# 2: CREATE new user (Good Params)
+curl 0.0.0.0:8000/isa_models/api/v1/users/ -d "first_name=lamar&last_name=keith&seller_rating=98.0&buyer_rating=67.4&email=lamar@gmail.com&password=password&phone_number=432-435-9899&ship_address=2030 university lane&ship_city=HooVille&ship_postal_code=22903&ship_country=usa"
+
+# 3: Show an existing user (Toggle 'id' field to test for Good and Bad Params)
+curl 0.0.0.0:8000/isa_models/api/v1/users/:id/
+
+# 4: UPDATE existing user (Bad Params)
+curl 0.0.0.0:8000/isa_models/api/v1/users/1/ -d "first_name=eric"
+
+# 5: UPDATE existing user (Good Params)
+curl 0.0.0.0:8000/isa_models/api/v1/users/1/ -d "first_name=eric&last_name=keith&seller_rating=98.0&buyer_rating=67.4&email=lamar@gmail.com&password=password&phone_number=432-435-9899&ship_address=2030 university lane&ship_city=HooVille&ship_postal_code=22903&ship_country=usa"
+
+# 6: DELETE a user (Toggle 'id' field to test for Good and Bad Params)
+curl -X "DELETE" 0.0.0.0:8000/isa_models/api/v1/users/:id/
+
+---------------------------CATEGORIES API---------------------------
+
+# 0: List all categories
+
+curl 0.0.0.0:8000/isa_models/api/v1/categories/
+
+# 1: CREATE new category (Bad Params)
+
+curl 0.0.0.0:8000/isa_models/api/v1/categories/ -d "wrong=food123"
+
+# 2: CREATE new category (Good Params)
+
+curl 0.0.0.0:8000/isa_models/api/v1/categories/ -d "name=food12"
+
+# 3: Show an existing category (Toggle 'id' field to test for Good and Bad Params)
+curl 0.0.0.0:8000/isa_models/api/v1/categories/:id/
+
+# 4: UPDATE existing category (Bad Params)
+curl 0.0.0.0:8000/isa_models/api/v1/categories/1/ -d "wrong=appliances"
+
+# 5: UPDATE existing category (Good Params)
+curl 0.0.0.0:8000/isa_models/api/v1/categories/1/ -d "name=appliances"
+
+# 6: DELETE a category (Toggle 'id' field to test for Good and Bad Params)
+curl -X "DELETE" 0.0.0.0:8000/isa_models/api/v1/categories/:id/
+
+---------------------------CONDITIONS API---------------------------
+
+# 0: List all conditions
+
+curl 0.0.0.0:8000/isa_models/api/v1/conditions/
+
+# 1: CREATE new condition (Bad Params)
+
+curl 0.0.0.0:8000/isa_models/api/v1/conditions/ -d "wrong=food123"
+
+# 2: CREATE new condition (Good Params)
+
+curl 0.0.0.0:8000/isa_models/api/v1/conditions/ -d "name=food123"

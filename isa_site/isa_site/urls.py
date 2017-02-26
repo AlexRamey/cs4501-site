@@ -18,5 +18,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^isa_models/', include('isa_models.urls')),
+    url(r'^isa_models/api/v1/', include('isa_models.urls')),
 ]
