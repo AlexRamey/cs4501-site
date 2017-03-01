@@ -8,9 +8,6 @@ from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 import json
 
-def index(request):
-    return render(request, 'isa_models/index.html')
-
 def users(request):
     return collection_response(request, UserForm(request.POST), User.objects)
 

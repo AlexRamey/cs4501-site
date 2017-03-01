@@ -1,9 +1,19 @@
 models:
     image: tp33/django
     external_links:
-      -  mysql:db
+      - mysql:db
     volumes:
       - ./isa_site:/app
     ports:
       - "8001:8000"
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py loaddata isa_models/fixtures/fixture1.json && mod_wsgi-express start-server --working-directory /app --reload-on-changes /app/isa_site/wsgi.py"
+
+exp:
+    image: tp33/django
+    links:
+      - models:models-api
+    volumes:
+      - ./isa_exp:/app
+    ports:
+      - "8002:8000"
+    command: bash -c "mod_wsgi-express start-server --working-directory /app --reload-on-changes /app/isa_exp/wsgi.py"
