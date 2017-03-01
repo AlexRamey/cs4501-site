@@ -117,7 +117,7 @@ The response is always a JSON Dictionary with a top-level `response` key whose v
 	- **GET**: Returns the Product with Id equal to :productId
 	
 - `/isa_experience/api/v1/userprofile/:userId/`
-	- **GET**: Returns the Profile for the User with Id equal to :userId
+	- **GET**: Returns the Profile for the User with Id equal to :userId. In addition to the user's details, the profile includes a list called 'sold' with all of the orders where this user was the seller, a list called 'purchased' with all of the orders where this user was the buyer, and a list called 'selling' with all of the products which this user is currently selling.
 
 ## Response Format:
 ### hotitems Success Sample Response:
