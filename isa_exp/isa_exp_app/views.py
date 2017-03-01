@@ -36,7 +36,7 @@ def hotitems(request):
         resp = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/users/'+str(result["fields"]["seller"]))
         if resp["response"] == "success":
             result["fields"]["seller_id"] = result["fields"]["seller"]
-            result["fields"]["seller_info"] = resp["data"][0]["fields"]
+            result["fields"]["seller"] = resp["data"][0]["fields"]
         else:
             return getJsonResponseForLayerOneError(resp)
 
