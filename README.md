@@ -61,6 +61,15 @@ cs4501 project
 	- **POST**: Updates the Category with Id equal to :categoryId with the POST params
 	- **DELETE**: Deletes the Category with Id equal to :categoryId
 	
+- `/isa_models/api/v1/users/:userId/purchased/`
+	- **GET**: Returns a List of Orders where User with Id equal to :userId is the BUYER
+
+- `/isa_models/api/v1/users/1/sold/`
+	- **GET**: Returns a List of Orders where User with Id equal to :userId is the SELLER
+	
+- `/isa_models/api/v1/users/1/selling/`
+	- **GET**: Returns a List of Products which are currently being sold by User with Id equal to :userId
+	
 ## Response Format:
 
 The response is always a JSON Dictionary with a top-level `response` key whose value is either `success` or `failure`.
@@ -96,153 +105,629 @@ The response is always a JSON Dictionary with a top-level `response` key whose v
 # Experience Layer API:
 
 ## Endpoints:
+### These all return fully-hydrated models, meaning that if one requested model has a foreign key to another model, the requested model will come back with the complete other model inside of it (totally fleshed out)
 
 - `/isa_experience/api/v1/hotitems/`
-	- **GET**: Current Implementation Returns Two Products With Lowest Stock along With Associated Seller Info
+	- **GET**: Current Implementation Returns the Two Products with the Lowest Stock
 	
 - `/isa_experience/api/v1/searchresults/`
 	- **GET**: Returns All Products (For Now)
+	
+- `/isa_experience/api/v1/productdetails/:productId/`
+	- **GET**: Returns the Product with Id equal to :productId
+	
+- `/isa_experience/api/v1/userprofile/:userId/`
+	- **GET**: Returns the Profile for the User with Id equal to :userId
 
 ## Response Format:
-### HotItems Success Sample Response:
+### hotitems Success Sample Response:
 * Required: `response`, `data`, and `count`
 ```json
 {
-	"response" : "success",
-	"count" : 2
-	"data" : [
-			{ 
-				"model": "isa_models.product", 
-				"fields": 
-						{
-							"sold": false,
-							"name": "Pink Guitar",
-							"condition": 2,
-							"stock": 1,
-							"category": 1,
-							"price": 300.0,
-							"seller":
-									{
-										"last_name": "buffet",
-										"email": "jimmybuffet@coralreefers.edu",
-										"ship_address": "101 Island Way",
-										"first_name": "jimmy",
-										"ship_postal_code": "22402",
-										"password": "password",
-										"ship_city": "Miami",
-										"phone_number": "1-098-765-4321",
-										"buyer_rating": 100.0,
-										"seller_rating": 100.0,
-										"ship_country": "USA"
-									},
-							"seller_id": 2,
-							"description": "From my live performance in Key Largo"
-						}, 
-				"pk": 1
-			},
-			{
-				"model": "isa_models.product", 
-				"fields": 
-						{
-							"sold": false, 
-							"name": "Apple Watch", 
-							"condition": 2, 
-							"stock": 1, 
-							"category": 4, 
-							"price": 50.0, 
-							"seller": 
-									{
-										"last_name": "springsteen",
-										"email": "brucespringsteen@boardwalk.org",
-										"ship_address": "151 pike street",
-										"first_name": "bruce",
-										"ship_postal_code": "56789",
-										"password": "password",
-										"ship_city": "trenton",
-										"phone_number": "4-321-109-8765",
-										"buyer_rating": 80.0,
-										"seller_rating": 100.0,
-										"ship_country": "USA"
-									},
-							"seller_id": 3,
-							"description": "Barely used!"
-						},
-				"pk": 2
-			}
-			
-		 ]
+    "data":[
+        {
+            "fields":{
+                "seller":{
+                    "fields":{
+                        "first_name":"jimmy",
+                        "seller_rating":100,
+                        "buyer_rating":100,
+                        "password":"password",
+                        "last_name":"buffet",
+                        "ship_address":"101 Island Way",
+                        "email":"jimmybuffet@coralreefers.edu",
+                        "phone_number":"1-098-765-4321",
+                        "ship_country":"USA",
+                        "ship_city":"Miami",
+                        "ship_postal_code":"22402"
+                    },
+                    "model":"isa_models.user",
+                    "pk":2
+                },
+                "category_id":1,
+                "condition":{
+                    "fields":{
+                        "name":"Good"
+                    },
+                    "model":"isa_models.condition",
+                    "pk":2
+                },
+                "name":"Pink Guitar",
+                "price":300,
+                "seller_id":2,
+                "sold":false,
+                "stock":1,
+                "category":{
+                    "fields":{
+                        "name":"Music"
+                    },
+                    "model":"isa_models.category",
+                    "pk":1
+                },
+                "condition_id":2,
+                "description":"From my live performance in Key Largo"
+            },
+            "model":"isa_models.product",
+            "pk":1
+        },
+        {
+            "fields":{
+                "seller":{
+                    "fields":{
+                        "first_name":"bruce",
+                        "seller_rating":100,
+                        "buyer_rating":80,
+                        "password":"password",
+                        "last_name":"springsteen",
+                        "ship_address":"151 pike street",
+                        "email":"brucespringsteen@boardwalk.org",
+                        "phone_number":"4-321-109-8765",
+                        "ship_country":"USA",
+                        "ship_city":"trenton",
+                        "ship_postal_code":"56789"
+                    },
+                    "model":"isa_models.user",
+                    "pk":3
+                },
+                "category_id":4,
+                "condition":{
+                    "fields":{
+                        "name":"Good"
+                    },
+                    "model":"isa_models.condition",
+                    "pk":2
+                },
+                "name":"Apple Watch",
+                "price":50,
+                "seller_id":3,
+                "sold":false,
+                "stock":1,
+                "category":{
+                    "fields":{
+                        "name":"Devices"
+                    },
+                    "model":"isa_models.category",
+                    "pk":4
+                },
+                "condition_id":2,
+                "description":"Barely used!"
+            },
+            "model":"isa_models.product",
+            "pk":2
+        }
+    ],
+    "response":"success",
+    "count":"2"
 }
 ```
 
-### SearchResults Success Sample Response:
+### searchresults Success Sample Response:
+* Required: `response`, `data`, and `count`
+```json	
+{
+    "data":[
+        {
+            "fields":{
+                "seller":{
+                    "fields":{
+                        "first_name":"jimmy",
+                        "seller_rating":100,
+                        "buyer_rating":100,
+                        "password":"password",
+                        "last_name":"buffet",
+                        "ship_address":"101 Island Way",
+                        "email":"jimmybuffet@coralreefers.edu",
+                        "phone_number":"1-098-765-4321",
+                        "ship_country":"USA",
+                        "ship_city":"Miami",
+                        "ship_postal_code":"22402"
+                    },
+                    "model":"isa_models.user",
+                    "pk":2
+                },
+                "category_id":1,
+                "condition":{
+                    "fields":{
+                        "name":"Good"
+                    },
+                    "model":"isa_models.condition",
+                    "pk":2
+                },
+                "name":"Pink Guitar",
+                "price":300,
+                "seller_id":2,
+                "sold":false,
+                "stock":1,
+                "category":{
+                    "fields":{
+                        "name":"Music"
+                    },
+                    "model":"isa_models.category",
+                    "pk":1
+                },
+                "condition_id":2,
+                "description":"From my live performance in Key Largo"
+            },
+            "model":"isa_models.product",
+            "pk":1
+        },
+        {
+            "fields":{
+                "seller":{
+                    "fields":{
+                        "first_name":"bruce",
+                        "seller_rating":100,
+                        "buyer_rating":80,
+                        "password":"password",
+                        "last_name":"springsteen",
+                        "ship_address":"151 pike street",
+                        "email":"brucespringsteen@boardwalk.org",
+                        "phone_number":"4-321-109-8765",
+                        "ship_country":"USA",
+                        "ship_city":"trenton",
+                        "ship_postal_code":"56789"
+                    },
+                    "model":"isa_models.user",
+                    "pk":3
+                },
+                "category_id":4,
+                "condition":{
+                    "fields":{
+                        "name":"Good"
+                    },
+                    "model":"isa_models.condition",
+                    "pk":2
+                },
+                "name":"Apple Watch",
+                "price":50,
+                "seller_id":3,
+                "sold":false,
+                "stock":1,
+                "category":{
+                    "fields":{
+                        "name":"Devices"
+                    },
+                    "model":"isa_models.category",
+                    "pk":4
+                },
+                "condition_id":2,
+                "description":"Barely used!"
+            },
+            "model":"isa_models.product",
+            "pk":2
+        },
+        {
+            "fields":{
+                "seller":{
+                    "fields":{
+                        "first_name":"lamar",
+                        "seller_rating":100,
+                        "buyer_rating":100,
+                        "password":"password",
+                        "last_name":"smith",
+                        "ship_address":"24 Sunset Lane",
+                        "email":"lamar@beaches.edu",
+                        "phone_number":"1-234-567-8910",
+                        "ship_country":"USA",
+                        "ship_city":"Key Largo",
+                        "ship_postal_code":"45678"
+                    },
+                    "model":"isa_models.user",
+                    "pk":1
+                },
+                "category_id":2,
+                "condition":{
+                    "fields":{
+                        "name":"New"
+                    },
+                    "model":"isa_models.condition",
+                    "pk":1
+                },
+                "name":"The Big Lebowski DVD",
+                "price":8,
+                "seller_id":1,
+                "sold":false,
+                "stock":50,
+                "category":{
+                    "fields":{
+                        "name":"Movies"
+                    },
+                    "model":"isa_models.category",
+                    "pk":2
+                },
+                "condition_id":1,
+                "description":"The Dude Abides"
+            },
+            "model":"isa_models.product",
+            "pk":3
+        },
+        {
+            "fields":{
+                "seller":{
+                    "fields":{
+                        "first_name":"lamar",
+                        "seller_rating":100,
+                        "buyer_rating":100,
+                        "password":"password",
+                        "last_name":"smith",
+                        "ship_address":"24 Sunset Lane",
+                        "email":"lamar@beaches.edu",
+                        "phone_number":"1-234-567-8910",
+                        "ship_country":"USA",
+                        "ship_city":"Key Largo",
+                        "ship_postal_code":"45678"
+                    },
+                    "model":"isa_models.user",
+                    "pk":1
+                },
+                "category_id":1,
+                "condition":{
+                    "fields":{
+                        "name":"Good"
+                    },
+                    "model":"isa_models.condition",
+                    "pk":2
+                },
+                "name":"banana",
+                "price":42,
+                "seller_id":1,
+                "sold":false,
+                "stock":5,
+                "category":{
+                    "fields":{
+                        "name":"Music"
+                    },
+                    "model":"isa_models.category",
+                    "pk":1
+                },
+                "condition_id":2,
+                "description":"fruit"
+            },
+            "model":"isa_models.product",
+            "pk":4
+        }
+    ],
+    "response":"success",
+    "count":"4"
+}
+```
+### productdetails Success Sample Response:
 * Required: `response`, `data`, and `count`
 ```json
 {
-	"response": "success",
-	"count": "4", 
-	"data": 
-		[
-			{
-				"model": "isa_models.product",
-				"fields": 
-						{
-							"price": 300.0,
-							"condition": 2,
-							"stock": 1,
-							"seller": 2,
-							"category": 1,
-							"description": "From my live performance in Key Largo",
-							"name": "Pink Guitar",
-							"sold": false
-						},
-				"pk": 1
-			},
-			{
-				"model": "isa_models.product", 
-				"fields": 
-						{
-							"price": 50.0,
-							"condition": 2,
-							"stock": 1,
-							"seller": 3,
-							"category": 4,
-							"description": "Barely used!",
-							"name": "Apple Watch",
-							"sold": false
-						},
-				"pk": 2
-			},
-			{
-				"model": "isa_models.product",
-				"fields":
-						{
-							"price": 8.0,
-							"condition": 1,
-							"stock": 50,
-							"seller": 1,
-							"category": 2,
-							"description": "The Dude Abides",
-							"name": "The Big Lebowski DVD",
-							"sold": false
-						},
-				"pk": 3
-			},
-			{
-				"model": "isa_models.product",
-				"fields": 
-						{
-							"price": 42.0,
-							"condition": 2,
-							"stock": 5,
-							"seller": 1,
-							"category": 1,
-							"description": "fruit",
-							"name": "banana",
-							"sold": false
-						},
-				"pk": 4
-			}
-		]
+    "data":[
+        {
+            "fields":{
+                "seller":{
+                    "fields":{
+                        "first_name":"bruce",
+                        "seller_rating":100,
+                        "buyer_rating":80,
+                        "password":"password",
+                        "last_name":"springsteen",
+                        "ship_address":"151 pike street",
+                        "email":"brucespringsteen@boardwalk.org",
+                        "phone_number":"4-321-109-8765",
+                        "ship_country":"USA",
+                        "ship_city":"trenton",
+                        "ship_postal_code":"56789"
+                    },
+                    "model":"isa_models.user",
+                    "pk":3
+                },
+                "category_id":4,
+                "condition":{
+                    "fields":{
+                        "name":"Good"
+                    },
+                    "model":"isa_models.condition",
+                    "pk":2
+                },
+                "name":"Apple Watch",
+                "price":50,
+                "seller_id":3,
+                "sold":false,
+                "stock":1,
+                "category":{
+                    "fields":{
+                        "name":"Devices"
+                    },
+                    "model":"isa_models.category",
+                    "pk":4
+                },
+                "condition_id":2,
+                "description":"Barely used!"
+            },
+            "model":"isa_models.product",
+            "pk":2
+        }
+    ],
+    "response":"success",
+    "count":"1"
+}
+```
+### userprofile Success Sample Response:
+* Required: `response`, `data`, and `count`
+```json
+{
+    "data":[
+        {
+            "model":"isa_models.user",
+            "currently_selling":[
+                {
+                    "fields":{
+                        "seller":{
+                            "fields":{
+                                "first_name":"jimmy",
+                                "seller_rating":100,
+                                "buyer_rating":100,
+                                "password":"password",
+                                "last_name":"buffet",
+                                "ship_address":"101 Island Way",
+                                "email":"jimmybuffet@coralreefers.edu",
+                                "phone_number":"1-098-765-4321",
+                                "ship_country":"USA",
+                                "ship_city":"Miami",
+                                "ship_postal_code":"22402"
+                            },
+                            "model":"isa_models.user",
+                            "pk":2
+                        },
+                        "category_id":1,
+                        "condition":{
+                            "fields":{
+                                "name":"Good"
+                            },
+                            "model":"isa_models.condition",
+                            "pk":2
+                        },
+                        "name":"Pink Guitar",
+                        "price":300,
+                        "seller_id":2,
+                        "sold":false,
+                        "stock":1,
+                        "category":{
+                            "fields":{
+                                "name":"Music"
+                            },
+                            "model":"isa_models.category",
+                            "pk":1
+                        },
+                        "condition_id":2,
+                        "description":"From my live performance in Key Largo"
+                    },
+                    "model":"isa_models.product",
+                    "pk":1
+                }
+            ],
+            "fields":{
+                "first_name":"jimmy",
+                "seller_rating":100,
+                "buyer_rating":100,
+                "password":"password",
+                "last_name":"buffet",
+                "ship_address":"101 Island Way",
+                "email":"jimmybuffet@coralreefers.edu",
+                "phone_number":"1-098-765-4321",
+                "ship_country":"USA",
+                "ship_city":"Miami",
+                "ship_postal_code":"22402"
+            },
+            "sold":[
+                {
+                    "fields":{
+                        "status":"delivered",
+                        "completed":false,
+                        "seller_rating":4,
+                        "product_snapshot_id":1,
+                        "buyer_id":1,
+                        "seller_id":2,
+                        "delivery_method":"ups",
+                        "seller":{
+                            "fields":{
+                                "first_name":"jimmy",
+                                "seller_rating":100,
+                                "buyer_rating":100,
+                                "password":"password",
+                                "last_name":"buffet",
+                                "ship_address":"101 Island Way",
+                                "email":"jimmybuffet@coralreefers.edu",
+                                "phone_number":"1-098-765-4321",
+                                "ship_country":"USA",
+                                "ship_city":"Miami",
+                                "ship_postal_code":"22402"
+                            },
+                            "model":"isa_models.user",
+                            "pk":2
+                        },
+                        "buyer_rating":5,
+                        "product_snapshot":{
+                            "fields":{
+                                "seller":{
+                                    "fields":{
+                                        "first_name":"lamar",
+                                        "seller_rating":100,
+                                        "buyer_rating":100,
+                                        "password":"password",
+                                        "last_name":"smith",
+                                        "ship_address":"24 Sunset Lane",
+                                        "email":"lamar@beaches.edu",
+                                        "phone_number":"1-234-567-8910",
+                                        "ship_country":"USA",
+                                        "ship_city":"Key Largo",
+                                        "ship_postal_code":"45678"
+                                    },
+                                    "model":"isa_models.user",
+                                    "pk":1
+                                },
+                                "condition_id":1,
+                                "condition":{
+                                    "fields":{
+                                        "name":"New"
+                                    },
+                                    "model":"isa_models.condition",
+                                    "pk":1
+                                },
+                                "name":"The Big Lebowski DVD",
+                                "price":8,
+                                "seller_id":1,
+                                "category_id":2,
+                                "category":{
+                                    "fields":{
+                                        "name":"Movies"
+                                    },
+                                    "model":"isa_models.category",
+                                    "pk":2
+                                },
+                                "description":"The Dude Abides"
+                            },
+                            "model":"isa_models.productsnapshot",
+                            "pk":1
+                        },
+                        "buyer":{
+                            "fields":{
+                                "first_name":"lamar",
+                                "seller_rating":100,
+                                "buyer_rating":100,
+                                "password":"password",
+                                "last_name":"smith",
+                                "ship_address":"24 Sunset Lane",
+                                "email":"lamar@beaches.edu",
+                                "phone_number":"1-234-567-8910",
+                                "ship_country":"USA",
+                                "ship_city":"Key Largo",
+                                "ship_postal_code":"45678"
+                            },
+                            "model":"isa_models.user",
+                            "pk":1
+                        },
+                        "order_date":"2017-01-15",
+                        "tracking_number":"564"
+                    },
+                    "model":"isa_models.order",
+                    "pk":3
+                }
+            ],
+            "purchases":[
+                {
+                    "fields":{
+                        "status":"In Route",
+                        "completed":false,
+                        "seller_rating":5,
+                        "product_snapshot_id":1,
+                        "buyer_id":2,
+                        "seller_id":1,
+                        "delivery_method":"UPS",
+                        "seller":{
+                            "fields":{
+                                "first_name":"lamar",
+                                "seller_rating":100,
+                                "buyer_rating":100,
+                                "password":"password",
+                                "last_name":"smith",
+                                "ship_address":"24 Sunset Lane",
+                                "email":"lamar@beaches.edu",
+                                "phone_number":"1-234-567-8910",
+                                "ship_country":"USA",
+                                "ship_city":"Key Largo",
+                                "ship_postal_code":"45678"
+                            },
+                            "model":"isa_models.user",
+                            "pk":1
+                        },
+                        "buyer_rating":5,
+                        "product_snapshot":{
+                            "fields":{
+                                "seller":{
+                                    "fields":{
+                                        "first_name":"lamar",
+                                        "seller_rating":100,
+                                        "buyer_rating":100,
+                                        "password":"password",
+                                        "last_name":"smith",
+                                        "ship_address":"24 Sunset Lane",
+                                        "email":"lamar@beaches.edu",
+                                        "phone_number":"1-234-567-8910",
+                                        "ship_country":"USA",
+                                        "ship_city":"Key Largo",
+                                        "ship_postal_code":"45678"
+                                    },
+                                    "model":"isa_models.user",
+                                    "pk":1
+                                },
+                                "condition_id":1,
+                                "condition":{
+                                    "fields":{
+                                        "name":"New"
+                                    },
+                                    "model":"isa_models.condition",
+                                    "pk":1
+                                },
+                                "name":"The Big Lebowski DVD",
+                                "price":8,
+                                "seller_id":1,
+                                "category_id":2,
+                                "category":{
+                                    "fields":{
+                                        "name":"Movies"
+                                    },
+                                    "model":"isa_models.category",
+                                    "pk":2
+                                },
+                                "description":"The Dude Abides"
+                            },
+                            "model":"isa_models.productsnapshot",
+                            "pk":1
+                        },
+                        "buyer":{
+                            "fields":{
+                                "first_name":"jimmy",
+                                "seller_rating":100,
+                                "buyer_rating":100,
+                                "password":"password",
+                                "last_name":"buffet",
+                                "ship_address":"101 Island Way",
+                                "email":"jimmybuffet@coralreefers.edu",
+                                "phone_number":"1-098-765-4321",
+                                "ship_country":"USA",
+                                "ship_city":"Miami",
+                                "ship_postal_code":"22402"
+                            },
+                            "model":"isa_models.user",
+                            "pk":2
+                        },
+                        "order_date":"2017-02-14",
+                        "tracking_number":"12345678910"
+                    },
+                    "model":"isa_models.order",
+                    "pk":1
+                }
+            ],
+            "pk":2
+        }
+    ],
+    "response":"success",
+    "count":"1"
 }
 ```
 
