@@ -42,7 +42,7 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-2 col-md-2 sidebar">
                 {% block side_block %}
                     <div id="button-holder">
                         <div class="btn-group-verticle">
@@ -53,10 +53,35 @@
                     </div>
                 {% endblock %}
         </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-           <div>
-                {% block body_block %}{% endblock %}
+        <div class="col-sm-9 col-sm-offset-5 main">
+
+        </div>
+        </div>
+          <div class="col-sm-9 col-sm-offset-5 main">
+          <h2>Hot Items</h2>
+        </div>
+        <div class="col-sm-4 col-sm-offset-2 hero-feature">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h3>{{name1}}</h3>
+                    <p>{{description1}}</p>
+                    <p>{{id1}}</p>
+                    <p>
+                        <a class="btn btn-primary">Add to Cart</a> <a class="btn btn-default">Detail</a>
+                    </p>
                 </div>
+            </div>
+        </div>
+        <div class="col-sm-4 col-sm-offset-1 hero-feature">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h3>{{name2}}</h3>
+                    <p>{{description2}}</p>
+                    <p>
+                        <a class="btn btn-primary">Add to Cart</a> <a class="btn btn-default">Detail</a>
+                    </p>
+                </div>
+            </div>
         </div>
       </div>
     </div>
