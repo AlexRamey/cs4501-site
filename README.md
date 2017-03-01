@@ -92,3 +92,167 @@ The response is always a JSON Dictionary with a top-level `response` key whose v
 		  }
 }
 ```
+
+# Experience Layer API:
+
+## Endpoints:
+
+- `/isa_experience/api/v1/hotitems/`
+	- **GET**: Current Implementation Returns Two Products With Lowest Stock along With Associated Seller Info
+	
+- `/isa_experience/api/v1/searchresults/`
+	- **GET**: Returns All Products (For Now)
+
+## Response Format:
+### HotItems Success Sample Response:
+* Required: `response`, `data`, and `count`
+```json
+{
+	"response" : "success",
+	"count" : 2
+	"data" : [
+			{ 
+				"model": "isa_models.product", 
+				"fields": 
+						{
+							"sold": false,
+							"name": "Pink Guitar",
+							"condition": 2,
+							"stock": 1,
+							"category": 1,
+							"price": 300.0,
+							"seller":
+									{
+										"last_name": "buffet",
+										"email": "jimmybuffet@coralreefers.edu",
+										"ship_address": "101 Island Way",
+										"first_name": "jimmy",
+										"ship_postal_code": "22402",
+										"password": "password",
+										"ship_city": "Miami",
+										"phone_number": "1-098-765-4321",
+										"buyer_rating": 100.0,
+										"seller_rating": 100.0,
+										"ship_country": "USA"
+									},
+							"seller_id": 2,
+							"description": "From my live performance in Key Largo"
+						}, 
+				"pk": 1
+			},
+			{
+				"model": "isa_models.product", 
+				"fields": 
+						{
+							"sold": false, 
+							"name": "Apple Watch", 
+							"condition": 2, 
+							"stock": 1, 
+							"category": 4, 
+							"price": 50.0, 
+							"seller": 
+									{
+										"last_name": "springsteen",
+										"email": "brucespringsteen@boardwalk.org",
+										"ship_address": "151 pike street",
+										"first_name": "bruce",
+										"ship_postal_code": "56789",
+										"password": "password",
+										"ship_city": "trenton",
+										"phone_number": "4-321-109-8765",
+										"buyer_rating": 80.0,
+										"seller_rating": 100.0,
+										"ship_country": "USA"
+									},
+							"seller_id": 3,
+							"description": "Barely used!"
+						},
+				"pk": 2
+			}
+			
+		 ]
+}
+```
+
+### SearchResults Success Sample Response:
+* Required: `response`, `data`, and `count`
+```json
+{
+	"response": "success",
+	"count": "4", 
+	"data": 
+		[
+			{
+				"model": "isa_models.product",
+				"fields": 
+						{
+							"price": 300.0,
+							"condition": 2,
+							"stock": 1,
+							"seller": 2,
+							"category": 1,
+							"description": "From my live performance in Key Largo",
+							"name": "Pink Guitar",
+							"sold": false
+						},
+				"pk": 1
+			},
+			{
+				"model": "isa_models.product", 
+				"fields": 
+						{
+							"price": 50.0,
+							"condition": 2,
+							"stock": 1,
+							"seller": 3,
+							"category": 4,
+							"description": "Barely used!",
+							"name": "Apple Watch",
+							"sold": false
+						},
+				"pk": 2
+			},
+			{
+				"model": "isa_models.product",
+				"fields":
+						{
+							"price": 8.0,
+							"condition": 1,
+							"stock": 50,
+							"seller": 1,
+							"category": 2,
+							"description": "The Dude Abides",
+							"name": "The Big Lebowski DVD",
+							"sold": false
+						},
+				"pk": 3
+			},
+			{
+				"model": "isa_models.product",
+				"fields": 
+						{
+							"price": 42.0,
+							"condition": 2,
+							"stock": 5,
+							"seller": 1,
+							"category": 1,
+							"description": "fruit",
+							"name": "banana",
+							"sold": false
+						},
+				"pk": 4
+			}
+		]
+}
+```
+
+### On Failure:
+* Required: `response` and `error` with `msg`
+```json
+{
+	"response" : "failure", 
+	"error" : {
+			"msg" : "Entity Does Not Exist.",
+		  }
+}
+```
