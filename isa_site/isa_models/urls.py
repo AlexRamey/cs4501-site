@@ -11,7 +11,7 @@ from . import home
 urlpatterns = [
     url(r'^$', home.index, name='index'),
 
-    url(r'^users/$', users),
+    url(r'^users/$', users, name = "users"),
     url(r'^users/(?P<user_id>\d+)/$', user),
     url(r'^users/(?P<buyer_id>\d+)/orders/$', user_orders),
     url(r'^products/$', products),
@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^productsnapshots/(?P<productsnapshot_id>\d+)/$', productsnapshot),
     url(r'^conditions/$', conditions),
     url(r'^conditions/(?P<condition_id>\d+)/$', condition),
-    url(r'^categories/$', categories),
-    url(r'^categories/(?P<category_id>\d+)/$', category),
+    url(r'^categories/$', categories, name="categories"),
+    url(r'^categories/(?P<category_id>\d+)/$', category, name = "category"),
     url(r'^categories/(?P<category_id>\d+)/products/$', category_products),
 ]

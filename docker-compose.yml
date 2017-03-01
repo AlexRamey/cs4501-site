@@ -6,7 +6,7 @@ models:
       - ./isa_site:/app
     ports:
       - "8001:8000"
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py loaddata isa_models/fixtures/fixture1.json && mod_wsgi-express start-server --working-directory /app --reload-on-changes /app/isa_site/wsgi.py"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py loaddata isa_models/fixtures/fixture1.json && mod_wsgi-express start-server --log-to-terminal --working-directory /app --reload-on-changes /app/isa_site/wsgi.py"
 
 exp:
     image: tp33/django
@@ -16,7 +16,7 @@ exp:
       - ./isa_exp:/app
     ports:
       - "8002:8000"
-    command: bash -c "mod_wsgi-express start-server --working-directory /app --reload-on-changes /app/isa_exp/wsgi.py"
+    command: bash -c "mod_wsgi-express start-server --working-directory /app --log-to-terminal --reload-on-changes /app/isa_exp/wsgi.py"
 
 web:
    image: tp33/django
@@ -26,4 +26,4 @@ web:
       - "8003:8000"
    volumes:
       - ./isa_web:/app
-   command: "mod_wsgi-express start-server --reload-on-changes /app/isa_web/wsgi.py"
+   command: "mod_wsgi-express start-server --log-to-terminal --reload-on-changes /app/isa_web/wsgi.py"

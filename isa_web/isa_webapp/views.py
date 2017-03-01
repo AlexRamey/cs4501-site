@@ -1,9 +1,13 @@
 from django.shortcuts import render
+
 from django.shortcuts import render_to_response
+
+
 from django.http import JsonResponse, HttpResponse
 from urllib.error import URLError, HTTPError
 import urllib.request
 import json
+
 
 def base(request):
 	#helloMsg = "Experience Home! API Version: 1"
@@ -21,6 +25,43 @@ def searchproduct(request):
 
 
 def getJsonResponseObject(url):
+
+
+def base(request):
+	resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/hotitems')
+	hot_items = resp["data"]
+
+	name1 = hot_items[0]["fields"]["name"]
+	name2 = hot_items[1]["fields"]["name"]
+
+	description1 = hot_items[0]["fields"]["description"]
+	description2 = hot_items[1]["fields"]["description"]
+
+	id1 = hot_items[0]["pk"]
+
+
+
+    # # Get the associated seller info
+    # for result in results:
+    #     resp = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/users/'+str(result["fields"]["seller"]))
+    #     if resp["response"] == "success":
+    #         result["fields"]["seller_id"] = result["fields"]["seller"]
+    #         result["fields"]["seller"] = resp["data"][0]["fields"]
+    #     else:
+    #         return getJsonResponseForLayerOneError(resp)
+
+    # if resp["response"] == "success":
+    #     count = len(results)
+    #     return JsonResponse({"response" : "success", "count" : str(count), "data" : results})
+    # else:
+    #     return getJsonResponseForLayerOneError(resp)
+
+
+	return render(request, 'isa_webapp/base.html', {"name1" : name1, "name2" : name2, "description1" : description1, "description2" : description2})
+
+
+def getJsonReponseObject(url):
+
     req = urllib.request.Request(url)
     
     try:
@@ -31,7 +72,11 @@ def getJsonResponseObject(url):
     except URLError as e:
         return JsonResponse({"response" : "failure", "error" : {"msg" : str(e.args)}})
 
+
     return json.loads(resp_json)
 
 def getJsonResponseForLayerOneError(resp):
     return JsonResponse({"response" : "failure", "error" : {"msg" : resp["error"]["msg"]}})
+
+    return json.loads(resp_json)
+
