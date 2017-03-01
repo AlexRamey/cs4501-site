@@ -17,3 +17,13 @@ exp:
     ports:
       - "8002:8000"
     command: bash -c "mod_wsgi-express start-server --working-directory /app --reload-on-changes /app/isa_exp/wsgi.py"
+
+web:
+   image: tp33/django
+   links:
+      - exp:exp-api
+   ports:
+      - "8003:8000"
+   volumes:
+      - ./isa_web:/app
+   command: "mod_wsgi-express start-server --reload-on-changes /app/isa_web/wsgi.py"
