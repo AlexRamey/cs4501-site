@@ -23,10 +23,6 @@ def searchproduct(request):
 	else:
 		return getJsonResponseForLayerOneError(resp)
 
-
-def getJsonResponseObject(url):
-
-
 def base(request):
 	resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/hotitems')
 	hot_items = resp["data"]
