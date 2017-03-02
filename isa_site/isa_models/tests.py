@@ -11,7 +11,9 @@ class GetTestCategory(TestCase):
 
     def test_success_response(self):
         #assumes user with id 1 is stored in db
-        response = self.client.get(reverse('categories')).json()
+        response = self.client.get(reverse('categories'))
+        print(response)
+        json_response = response.json()
         self.assertEquals(response['response'], 'success')
         self.assertTrue(isinstance(response['data'], list))
         #self.assertTrue(len(response['data']) != 0)
