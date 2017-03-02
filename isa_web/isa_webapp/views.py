@@ -10,6 +10,22 @@ import json
 
 
 def base(request):
+
+	#helloMsg = "Experience Home! API Version: 1"
+	return render(request, 'isa_webapp/base.html')#, {'helloMsg' : helloMsg})
+
+def searchproduct(request):
+	# Call API from layer 2
+	response = getJsonResponseObject('http://isa_experience/api/v1/searchresults')
+
+	if response["response"] == "success":
+		count = len(resp["data"])
+		return JsonResponse({"response" : "success", "count" : str(count), "data" : resp["data"]})
+	else:
+		return getJsonResponseForLayerOneError(resp)
+
+def base(request):
+
 	resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/hotitems')
 	hot_items = resp["data"]
 
@@ -53,6 +69,9 @@ def productdetails(request, id):
 def userprofile(request):
 
     response = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/:1/')
+
+	return render(request, 'isa_webapp/base.html', {"name1" : name1, "name2" : name2, "description1" : description1, "description2" : description2})
+
 
     if response["response"] == "success":
         count = len(response["data"])
