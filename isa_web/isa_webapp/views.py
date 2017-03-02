@@ -10,24 +10,6 @@ import json
 
 
 def base(request):
-	#helloMsg = "Experience Home! API Version: 1"
-	return render(request, 'isa_webapp/base.html')#, {'helloMsg' : helloMsg})
-
-def searchproduct(request):
-	# Call API from layer 2
-	response = getJsonResponseObject('http://isa_experience/api/v1/searchresults')
-
-	if response["response"] == "success":
-		count = len(resp["data"])
-		return JsonResponse({"response" : "success", "count" : str(count), "data" : resp["data"]})
-	else:
-		return getJsonResponseForLayerOneError(resp)
-
-
-def getJsonResponseObject(url):
-
-
-def base(request):
 	resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/hotitems')
 	hot_items = resp["data"]
 
@@ -40,25 +22,43 @@ def base(request):
 	id1 = hot_items[0]["pk"]
 
 
+	return render(request, 'isa_webapp/base.html', {"name1" : name1, "name2" : name2, "description1" : description1, "description2" : description2, "id1" : id1})
 
-    # # Get the associated seller info
-    # for result in results:
-    #     resp = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/users/'+str(result["fields"]["seller"]))
-    #     if resp["response"] == "success":
-    #         result["fields"]["seller_id"] = result["fields"]["seller"]
-    #         result["fields"]["seller"] = resp["data"][0]["fields"]
-    #     else:
-    #         return getJsonResponseForLayerOneError(resp)
+def searchproduct(request):
 
-    # if resp["response"] == "success":
-    #     count = len(results)
-    #     return JsonResponse({"response" : "success", "count" : str(count), "data" : results})
-    # else:
-    #     return getJsonResponseForLayerOneError(resp)
+    context = {}
 
+    req = urllib.request.Request('http://exp-api:8000/isa_experience/api/v1/searchresults')
 
-	return render(request, 'isa_webapp/base.html', {"name1" : name1, "name2" : name2, "description1" : description1, "description2" : description2})
+    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    resp = json.loads(resp_json)
 
+    context['response'] = resp
+
+    return render(request, 'isa_webapp/search_product.html', context)
+
+def productdetails(request, id):
+
+    context = {}
+
+    req = urllib.request.Request('http://exp-api:8000/isa_experience/api/v1/productdetails/' +id+ '/')
+
+    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    resp = json.loads(resp_json)
+
+    context['response'] = resp
+
+    return render(request, 'isa_webapp/product_details.html', context)
+
+def userprofile(request):
+
+    response = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/:1/')
+
+    if response["response"] == "success":
+        count = len(response["data"])
+        return render(request, 'isa_webapp/user_profile.html', {"response" : "success", "count" : str(count), "data" : response["data"]})
+    else:
+        return getJsonResponseForLayerOneError(response)
 
 def getJsonReponseObject(url):
 
