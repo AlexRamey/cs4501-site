@@ -1,0 +1,29 @@
+Home Page (iteration 3)
+
+As a shopper in need of Christmas present ideas, I want to see some ‘hot items’ displayed on the home page
+
+Shopping Cart Page
+
+As a busy shopper, I want to be able to add items to my shopping cart and view them when I come back to the site later
+
+Profile Page (iteration 3)
+
+As a buyer, I wish to be able to see a list of my past purchases
+
+As a seller, I wish to be able to see a list of my past sold items and items which are currently for sale
+
+Category Specific Home Pages
+
+As an entertainment enthusiast, I wish to peruse the different categories on the site and see the different products listed
+
+General Search Page (iteration 3)
+
+As a user, I want to be able to search among the products/vendors
+
+Product Detail Page (iteration 3)
+
+As a careful shopper I wish to see the rating of a vendor and the other items he is selling
+
+Checkout Page 
+
+As a merchant, I wish to have my payments processed and verified by a third party

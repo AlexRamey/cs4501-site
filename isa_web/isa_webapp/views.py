@@ -11,34 +11,34 @@ import json
 
 def base(request):
 
-	#helloMsg = "Experience Home! API Version: 1"
-	return render(request, 'isa_webapp/base.html')#, {'helloMsg' : helloMsg})
+    #helloMsg = "Experience Home! API Version: 1"
+    return render(request, 'isa_webapp/base.html')#, {'helloMsg' : helloMsg})
 
 def searchproduct(request):
-	# Call API from layer 2
-	response = getJsonResponseObject('http://isa_experience/api/v1/searchresults')
+    # Call API from layer 2
+    response = getJsonResponseObject('http://isa_experience/api/v1/searchresults')
 
-	if response["response"] == "success":
-		count = len(resp["data"])
-		return JsonResponse({"response" : "success", "count" : str(count), "data" : resp["data"]})
-	else:
-		return getJsonResponseForLayerOneError(resp)
+    if response["response"] == "success":
+        count = len(resp["data"])
+        return JsonResponse({"response" : "success", "count" : str(count), "data" : resp["data"]})
+    else:
+        return getJsonResponseForLayerOneError(resp)
 
 def base(request):
 
-	resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/hotitems')
-	hot_items = resp["data"]
+    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/hotitems')
+    hot_items = resp["data"]
 
-	name1 = hot_items[0]["fields"]["name"]
-	name2 = hot_items[1]["fields"]["name"]
+    name1 = hot_items[0]["fields"]["name"]
+    name2 = hot_items[1]["fields"]["name"]
 
-	description1 = hot_items[0]["fields"]["description"]
-	description2 = hot_items[1]["fields"]["description"]
+    description1 = hot_items[0]["fields"]["description"]
+    description2 = hot_items[1]["fields"]["description"]
 
-	id1 = hot_items[0]["pk"]
+    id1 = hot_items[0]["pk"]
+    id2 = hot_items[1]["pk"]
 
-
-	return render(request, 'isa_webapp/base.html', {"name1" : name1, "name2" : name2, "description1" : description1, "description2" : description2, "id1" : id1})
+    return render(request, 'isa_webapp/base.html', {"name1" : name1, "name2" : name2, "description1" : description1, "description2" : description2, "id1" : id1, "id2" : id2})
 
 def searchproduct(request):
 
@@ -70,7 +70,7 @@ def userprofile(request):
 
     response = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/:1/')
 
-	return render(request, 'isa_webapp/base.html', {"name1" : name1, "name2" : name2, "description1" : description1, "description2" : description2})
+    return render(request, 'isa_webapp/base.html', {"name1" : name1, "name2" : name2, "description1" : description1, "description2" : description2})
 
 
     if response["response"] == "success":
