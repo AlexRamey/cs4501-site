@@ -1,10 +1,17 @@
-{% extends "isa_webapp/base.html" %}
+{% extends "isa_webapp/template.html" %}
 {% block title %}Search Product{% endblock %}
 {% block body_block %}
 <body>
-    <form method="post">{% csrf_token %}
-    
-    </form>
+	<div class="col-sm-9 col-sm-offset-5 main">
+          <h2>Search Product</h2>
+    </div>
+    <div>
+    	{% for i in response.data %}
+
+            {{ i.fields.name }} </br>
+
+        {% endfor %}
+    </div>
 
 </body>
 {% endblock %}
