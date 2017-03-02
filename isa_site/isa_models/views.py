@@ -68,8 +68,14 @@ def condition(request, condition_id):
 
     return entity_response(request, result, ConditionForm(request.POST, instance=result))
 
-def user_orders(request, buyer_id):
+def user_purchased(request, buyer_id):
     return data_json_response(Order.objects.all().filter(buyer = buyer_id))
+
+def user_sold(request, seller_id):
+    return data_json_response(Order.objects.all().filter(seller = seller_id))
+
+def user_selling(request, seller_id):
+    return data_json_response(Product.objects.all().filter(seller = seller_id, sold = False))
 
 def category_products(request, category_id):
     return data_json_response(Product.objects.all().filter(category = category_id))
@@ -78,7 +84,7 @@ def category_products(request, category_id):
 def data_json_response(list_of_objects):
     data = serializers.serialize("json", list_of_objects)
     response = JsonResponse(data, safe = False)
-    response.content = ("{\"response\" : \"success\", \"data\" : ").encode('utf-8') + response.content[1:-1] + "}".encode('utf-8')
+    response.content = ("{\"response\" : \"success\", \"data\" : ").encode('utf-8') + (str(response.content[1:-1], 'utf-8').replace("\\","")).encode('utf-8') + "}".encode('utf-8')
     return response
 
 def create_or_update_model_post_response(modelForm):
