@@ -10,4 +10,8 @@ urlpatterns = [
     url(r'^product/(?P<id>[0-9]+)/$',views.productdetails, name='product'),
 
     url(r'^profile/$',views.userprofile, name='profile'),
+
+    url(r'^createaccount/$', views.createaccount, name='createaccount'),
+
+    url(r'^login/$', views.login, name='login'),
   ]
