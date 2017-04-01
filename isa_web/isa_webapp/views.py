@@ -42,6 +42,8 @@ def productdetails(request, id):
 
     return render(request, 'isa_webapp/product_details.html', context)
 
+# TODO: userprofile should show a lot more info such as a user's listing (products where they are the seller)
+            # this info is already provided by the experience layer API so get it out of the resp object 
 # TODO: userprofile should accept a user id as a parameter
 # TODO: userprofile should have a login guard around it
 def userprofile(request):
@@ -113,6 +115,8 @@ def createlisting(request):
         if form.is_valid():
             resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting/', "POST", urllib.parse.urlencode(form.cleaned_data).encode('utf-8'))
             if resp["response"] == "success":
+                # TODO: Maybe go to a success page here
+                # BTW: A user's listings should appear on their profile page
                 return HttpResponseRedirect(reverse('base'))
             else:
                 context["error"] = resp["error"]["msg"]
@@ -128,10 +132,10 @@ def createlisting(request):
         conditions = resp["data"]["conditions"]
         conditions = map((lambda condition: (condition["pk"], condition["fields"]["name"])), conditions)
 
-        form = CreateListingForm(categories, conditions, context["auth"])
+        form = CreateListingForm()
+        form.initialize(categories, conditions, context["auth"])
 
     context["form"] = form
-    print(context)
     return render(request, 'isa_webapp/create_listing.html', context)
 
 # HELPER METHODS

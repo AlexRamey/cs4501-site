@@ -161,9 +161,9 @@ def createlisting(request):
         results["categories"] = categories
         return getJsonResponseForResults(results)
 
-    else: #POST
-        # POST the Listing to the DB
-        return None
+    else: # POST
+        listingResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
+        return listingResponse(loginResponse)
 
 # HELPER METHODS
 def getJsonReponseObject(url, method="GET", data=None):

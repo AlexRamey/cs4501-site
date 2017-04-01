@@ -1,9 +1,6 @@
 from django.shortcuts import render
-
 from django.http import JsonResponse, HttpResponse
-
 from isa_models.models import User, UserForm, Authenticator, Category, CategoryForm, Condition, ConditionForm, Product, ProductForm, ProductSnapshot, ProductSnapshotForm, Order, OrderForm
-
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.hashers import check_password, make_password
@@ -11,6 +8,7 @@ import json
 import os
 import hmac
 from django.conf import settings
+import datetime
 
 def users(request):
     if request.method == "POST":
@@ -57,7 +55,23 @@ def authenticators(request):
     return data_json_response(Authenticator.objects.all())
 
 def products(request):
-    return collection_response(request, ProductForm(request.POST), Product.objects)
+    if request.method == "POST":
+        authenticator = request.POST["seller"]
+        today = datetime.date.today()
+        one_week_ago = today - datetime.timedelta(weeks=1)
+        authenticators = Authenticator.objects.filter(authenticator=authenticator).filter(created_at__range=[one_week_ago, today])
+        if (len(authenticators) == 0):
+            return JsonResponse({'response' : 'failure', 'error' : { 'msg' : 'Invalid credentials!'}})
+        else:
+            mutable_post_params = request.POST.copy()
+            mutable_post_params["seller"] = authenticators[0].user
+            resp = create_or_update_model_post_response(UserForm(mutable_post_params))
+            return resp
+            
+    elif request.method == "GET":
+        return data_json_response(Product.objects.all())
+    else:
+        return HttpResponse("Invalid HTTP Method (must be GET or POST).", status=404)
 
 def product(request, product_id):
     result = entity_or_not_found_response(Product.objects, product_id)
