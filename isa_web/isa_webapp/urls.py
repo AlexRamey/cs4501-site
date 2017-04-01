@@ -4,14 +4,10 @@ from isa_webapp import views
 
 urlpatterns = [
     url(r'^$', views.base, name='base'),
-
     url(r'^search/$',views.searchproduct, name='search'),
-
     url(r'^product/(?P<id>[0-9]+)/$',views.productdetails, name='product'),
-
     url(r'^profile/$',views.userprofile, name='profile'),
-
     url(r'^createaccount/$', views.createaccount, name='createaccount'),
-
     url(r'^login/$', views.login, name='login'),
+    url(r'^logout/$', views.logout, name='logout'),
   ]

@@ -18,16 +18,16 @@ class User(models.Model):
     def __str__(self):
         return "User: " + self.email
 
-class Authenticator(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE) # the user associated with this authenticator
-    authenticator = models.CharField(max_length=64) # hex digest of random 256 bits
-    date_created = models.DateField(auto_now_add=True) # automatically set to current data upon completion
-
 class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ['email', 'password', 'first_name', 'last_name', 'phone_number', 'ship_address',
                   'ship_city', 'ship_postal_code', 'ship_country', 'buyer_rating', 'seller_rating']
+
+class Authenticator(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE) # the user associated with this authenticator
+    authenticator = models.CharField(max_length=64) # hex digest of random 256 bits
+    date_created = models.DateField(auto_now_add=True) # automatically set to current data upon completion
 
 class Category(models.Model):
     name = models.CharField(max_length=30)

@@ -34,9 +34,11 @@
          </div>
          <div class="navbar-collapse collapse">
            <ul class="nav navbar-nav navbar-right">
-            <!-- TODO: Toggle the following based on if there is a COOKIE with valid authenticator -->
-               <li><a href="" class="btn btn-black"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-               <li><a href="/isa_web/login" class="btn btn-black"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              {% if auth %}
+                <li><a href="/isa_web/logout" class="btn btn-black"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+              {% else %}
+                <li><a href="/isa_web/login" class="btn btn-black"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              {% endif %}
            </ul>
          </div>
        </div>

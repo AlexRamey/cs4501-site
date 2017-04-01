@@ -1,37 +1,24 @@
 from .forms import CreateAccountForm
 from django.shortcuts import render
 from django.shortcuts import render_to_response
+from django.core.urlresolvers import reverse
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from urllib.error import URLError, HTTPError
 import urllib.request
 import urllib
 import json
-
-
-def base(request):
-
-    #helloMsg = "Experience Home! API Version: 1"
-    return render(request, 'isa_webapp/base.html')#, {'helloMsg' : helloMsg})
-
-def searchproduct(request):
-    # Call API from layer 2
-    response = getJsonResponseObject('http://isa_experience/api/v1/searchresults')
-
-    if response["response"] == "success":
-        count = len(resp["data"])
-        return JsonResponse({"response" : "success", "count" : str(count), "data" : resp["data"]})
-    else:
-        return getJsonResponseForLayerOneError(resp)
+import datetime
 
 def base(request):
     resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/hotitems')
     context = {}
+    context["auth"] = request.COOKIES.get('auth') 
     context['hot_items'] = resp["data"]
     return render(request, 'isa_webapp/base.html', context)
 
 def searchproduct(request):
-
     context = {}
+    context["auth"] = request.COOKIES.get('auth') 
 
     req = urllib.request.Request('http://exp-api:8000/isa_experience/api/v1/searchresults')
 
@@ -43,8 +30,8 @@ def searchproduct(request):
     return render(request, 'isa_webapp/search_product.html', context)
 
 def productdetails(request, id):
-
     context = {}
+    context["auth"] = request.COOKIES.get('auth') 
 
     req = urllib.request.Request('http://exp-api:8000/isa_experience/api/v1/productdetails/' +id+ '/')
 
@@ -55,38 +42,48 @@ def productdetails(request, id):
 
     return render(request, 'isa_webapp/product_details.html', context)
 
+# TODO: userprofile should accept a user id as a parameter
 def userprofile(request):
+    context = {}
+    context["auth"] = request.COOKIES.get('auth')
 
     response = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/:1/')
-
-    return render(request, 'isa_webapp/base.html', {"name1" : name1, "name2" : name2, "description1" : description1, "description2" : description2})
-
-
-    if response["response"] == "success":
-        count = len(response["data"])
-        return render(request, 'isa_webapp/user_profile.html', {"response" : "success", "count" : str(count), "data" : response["data"]})
-    else:
-        return getJsonResponseForLayerOneError(response)
+    return render(request, 'isa_webapp/user_profile.html', context)
 
 def createaccount(request):
+    context = {}
+    context["auth"] = request.COOKIES.get('auth')
+
     if request.method == "POST":
         form = CreateAccountForm(request.POST)
 
         if form.is_valid():
             resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createaccount/', "POST", urllib.parse.urlencode(form.cleaned_data).encode('utf-8'))
-            result = resp["response"]
-
-            return HttpResponseRedirect("/isa_webapp/?result=" + result)
+            if resp["response"] == "success":
+                # Set Cookie!
+                response = HttpResponseRedirect(reverse('base'))
+                expiration = datetime.datetime.now() + datetime.timedelta(weeks=1)
+                response.set_cookie("auth", value=resp["data"][0]["auth"], expires=expiration, httponly=True)
+                return response
+            else:
+                context["error"] = "Failed to create user :("
     
     else: # GET
         form = CreateAccountForm()
 
-    context = {}
+    
     context["form"] = form
     return render(request, 'isa_webapp/create_account.html', context)
 
 def login(request):
+    context = {}
+    context["auth"] = request.COOKIES.get('auth')
     return render(request, 'isa_webapp/login.html')
+
+def logout(request):
+    response = HttpResponseRedirect(reverse('base'))
+    response.delete_cookie("auth")
+    return response
 
 def getJsonReponseObject(url, method="GET", data=None):
 

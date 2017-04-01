@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import users, user, user_purchased, user_sold, user_selling
+from .views import users, user, user_purchased, user_sold, user_selling, authenticators
 from .views import products, product
 from .views import orders, order
 from .views import productsnapshots, productsnapshot
@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^categories/$', categories, name="categories"),
     url(r'^categories/(?P<category_id>\d+)/$', category, name = "category"),
     url(r'^categories/(?P<category_id>\d+)/products/$', category_products),
+    # url(r'^authenticators/$', authenticators, name = "authenticators"),
 ]

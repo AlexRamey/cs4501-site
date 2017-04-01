@@ -2,14 +2,38 @@ from django.shortcuts import render
 
 from django.http import JsonResponse, HttpResponse
 
-from isa_models.models import User, UserForm, Category, CategoryForm, Condition, ConditionForm, Product, ProductForm, ProductSnapshot, ProductSnapshotForm, Order, OrderForm
+from isa_models.models import User, UserForm, Authenticator, Category, CategoryForm, Condition, ConditionForm, Product, ProductForm, ProductSnapshot, ProductSnapshotForm, Order, OrderForm
 
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 import json
+import os
+import hmac
+from django.conf import settings
 
 def users(request):
-    return collection_response(request, UserForm(request.POST), User.objects)
+    if request.method == "POST":
+        resp = create_or_update_model_post_response(UserForm(request.POST))
+
+        if (json.loads(resp.content.decode('utf-8')))["response"] == "success":
+            json_object = json.loads(resp.content.decode('utf-8'))
+            # Create a new authenticator for this user!
+            authenticator = hmac.new(
+                key = settings.SECRET_KEY.encode('utf-8'),
+                msg = os.urandom(32),
+                digestmod = 'sha256',
+            ).hexdigest()
+            user_id = json_object["data"][0]["pk"]
+            auth = Authenticator(authenticator=authenticator, user=User.objects.get(pk=user_id))
+            auth.save()
+            json_object["data"][0]["auth"] = authenticator
+            resp = JsonResponse(json_object)
+
+        return resp
+    elif request.method == "GET":
+        return data_json_response(User.objects.all())
+    else:
+        return HttpResponse("Invalid HTTP Method (must be GET or POST).", status=404)
 
 def user(request, user_id):
     result = entity_or_not_found_response(User.objects, user_id)
@@ -17,6 +41,9 @@ def user(request, user_id):
         return result
 
     return entity_response(request, result, UserForm(request.POST, instance=result))
+
+def authenticators(request):
+    return data_json_response(Authenticator.objects.all())
 
 def products(request):
     return collection_response(request, ProductForm(request.POST), Product.objects)
