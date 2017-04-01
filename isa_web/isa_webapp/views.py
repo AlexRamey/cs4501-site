@@ -93,10 +93,15 @@ def login(request):
     return render(request, 'isa_webapp/login.html', context)
 
 def logout(request):
-    response = HttpResponseRedirect(reverse('base'))
-    response.delete_cookie("auth")
-    response.delete_cookie("auth_name")
-    return response
+    if request.method == "POST":
+        response = HttpResponseRedirect(reverse('base'))
+        response.delete_cookie("auth")
+        response.delete_cookie("auth_name")
+        return response
+    else: # GET
+        context = getInitialContext(request)
+        return render(request, 'isa_webapp/logout.html', context)
+
 
 # HELPER METHODS
 def getJsonReponseObject(url, method="GET", data=None):
