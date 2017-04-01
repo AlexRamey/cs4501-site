@@ -135,6 +135,36 @@ def login(request):
     loginResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/login/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
     return JsonResponse(loginResponse)
 
+def createlisting(request):
+    if request.method == "GET": # Return the data needed by the create listing experience
+        # STEP 1: Get all categories
+        categoriesResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/categories')
+
+        # Verify that no error occurred here
+        if categoriesResponse["response"] == "failure":
+            return getJsonResponseForLayerOneError(categoriesResponse)
+
+        categories = categoriesResponse["data"]
+
+        # STEP 2: Get all conditions
+        conditionsResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/conditions')
+
+        # Verify that no error occurred here
+        if conditionsResponse["response"] == "failure":
+            return getJsonResponseForLayerOneError(conditionsResponse)
+
+        conditions = conditionsResponse["data"]
+
+        # STEP 3: Combine them and return the result
+        results = {}
+        results["conditions"] = conditions
+        results["categories"] = categories
+        return getJsonResponseForResults(results)
+
+    else: #POST
+        # POST the Listing to the DB
+        return None
+
 # HELPER METHODS
 def getJsonReponseObject(url, method="GET", data=None):
     req = urllib.request.Request(url, method=method, data=data)

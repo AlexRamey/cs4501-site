@@ -16,3 +16,19 @@ class CreateAccountForm(forms.Form):
 class LoginForm(forms.Form):
     email = forms.EmailField(max_length=100)
     password = forms.CharField(widget=forms.PasswordInput, max_length=100)
+
+class CreateListingForm(forms.Form):
+    name = forms.CharField(max_length=100)
+    description = forms.CharField(max_length=200)
+    price = forms.FloatField(min_value=0.01)
+    stock = forms.IntegerField(min_value=1, max_value=99, initial=1)
+    sold = forms.BooleanField(widget=forms.HiddenInput, initial=False)
+    #category = None  # will be set with category options
+    #condition = None # will be set with condition options
+    #seller = None # will be set with auth value in cookie
+
+    def __init__(self, categories, conditions, auth, *args, **kwargs):
+        super(CreateListingForm, self).__init__(*args, **kwargs)
+        self.fields["category"] = forms.ChoiceField(categories)
+        self.fields["condition"] = forms.ChoiceField(conditions)
+        self.fields["seller"] = forms.CharField(widget=forms.HiddenInput, initial=auth)

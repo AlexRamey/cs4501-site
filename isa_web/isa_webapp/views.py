@@ -1,4 +1,4 @@
-from .forms import CreateAccountForm, LoginForm
+from .forms import CreateAccountForm, LoginForm, CreateListingForm
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
@@ -43,6 +43,7 @@ def productdetails(request, id):
     return render(request, 'isa_webapp/product_details.html', context)
 
 # TODO: userprofile should accept a user id as a parameter
+# TODO: userprofile should have a login guard around it
 def userprofile(request):
     context = getInitialContext(request)
 
@@ -102,6 +103,36 @@ def logout(request):
         context = getInitialContext(request)
         return render(request, 'isa_webapp/logout.html', context)
 
+# TODO: create listing should have a login guard around it
+def createlisting(request):
+    context = getInitialContext(request)
+
+    if request.method == "POST":
+        form = CreateListingForm(request.POST)
+
+        if form.is_valid():
+            resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting/', "POST", urllib.parse.urlencode(form.cleaned_data).encode('utf-8'))
+            if resp["response"] == "success":
+                return HttpResponseRedirect(reverse('base'))
+            else:
+                context["error"] = resp["error"]["msg"]
+
+    else: # GET
+        resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting')
+
+        if resp["response"] == "failure":
+            return HttpResponseRedirect(reverse('base'))
+
+        categories = resp["data"]["categories"]
+        categories = map((lambda category: (category["pk"], category["fields"]["name"])), categories)
+        conditions = resp["data"]["conditions"]
+        conditions = map((lambda condition: (condition["pk"], condition["fields"]["name"])), conditions)
+
+        form = CreateListingForm(categories, conditions, context["auth"])
+
+    context["form"] = form
+    print(context)
+    return render(request, 'isa_webapp/create_listing.html', context)
 
 # HELPER METHODS
 def getJsonReponseObject(url, method="GET", data=None):
