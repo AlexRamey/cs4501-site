@@ -108,9 +108,18 @@ def logout(request):
 # TODO: create listing should have a login guard around it
 def createlisting(request):
     context = getInitialContext(request)
+    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting')
+
+    if resp["response"] == "failure":
+        return HttpResponseRedirect(reverse('base'))
+
+    categories = resp["data"]["categories"]
+    categories = map((lambda category: (category["pk"], category["fields"]["name"])), categories)
+    conditions = resp["data"]["conditions"]
+    conditions = map((lambda condition: (condition["pk"], condition["fields"]["name"])), conditions)
 
     if request.method == "POST":
-        form = CreateListingForm(request.POST)
+        form = CreateListingForm(categories, conditions, context["auth"], request.POST)
 
         if form.is_valid():
             resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting/', "POST", urllib.parse.urlencode(form.cleaned_data).encode('utf-8'))
@@ -122,18 +131,7 @@ def createlisting(request):
                 context["error"] = resp["error"]["msg"]
 
     else: # GET
-        resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting')
-
-        if resp["response"] == "failure":
-            return HttpResponseRedirect(reverse('base'))
-
-        categories = resp["data"]["categories"]
-        categories = map((lambda category: (category["pk"], category["fields"]["name"])), categories)
-        conditions = resp["data"]["conditions"]
-        conditions = map((lambda condition: (condition["pk"], condition["fields"]["name"])), conditions)
-
-        form = CreateListingForm()
-        form.initialize(categories, conditions, context["auth"])
+        form = CreateListingForm(categories, conditions, context["auth"])
 
     context["form"] = form
     return render(request, 'isa_webapp/create_listing.html', context)
