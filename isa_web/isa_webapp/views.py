@@ -158,6 +158,7 @@ def getInitialContext(request):
     context = {}
     context["auth"] = request.COOKIES.get('auth')
     context["auth_name"] = request.COOKIES.get('auth_name')
+    context["auth_id"] = request.COOKIES.get('auth_id')
     return context
 
 def getRedirectResponseThatSetsAuthCookies(successResponseWithAuth, redirectPath):
@@ -165,5 +166,6 @@ def getRedirectResponseThatSetsAuthCookies(successResponseWithAuth, redirectPath
     expiration = datetime.datetime.now() + datetime.timedelta(weeks=1)
     response.set_cookie("auth", value=successResponseWithAuth["data"][0]["auth"], expires=expiration, httponly=True)
     response.set_cookie("auth_name", value=successResponseWithAuth["data"][0]["fields"]["first_name"], expires=expiration, httponly=True)
+    response.set_cookie("auth_id", value=successResponseWithAuth["data"][0]["pk"], expires=expiration, httponly=True)
     return response
 
