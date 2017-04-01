@@ -42,6 +42,31 @@ def user(request, user_id):
 
     return entity_response(request, result, UserForm(request.POST, instance=result))
 
+def login(request):
+    if request.method == "POST":
+        users = User.objects.filter(email=request.POST["email"])
+        if len(users) > 0:
+            users = users.filter(password=request.POST["password"])
+            if len(users) > 0:
+                user = users[0]
+                authenticator = hmac.new(
+                    key = settings.SECRET_KEY.encode('utf-8'),
+                    msg = os.urandom(32),
+                    digestmod = 'sha256',
+                ).hexdigest()
+                auth = Authenticator(authenticator=authenticator, user=user)
+                auth.save()
+                resp = data_json_response([user])
+                json_object = json.loads(resp.content.decode('utf-8'))
+                json_object["data"][0]["auth"] = authenticator
+                resp = JsonResponse(json_object)
+                print(resp)
+                return resp
+
+        return JsonResponse({'response' : 'failure', 'error' : { 'msg' : 'Wrong username or password!'}})
+    else:
+        return HttpResponse("Invalid HTTP Method (must be POST).", status=404)
+
 def authenticators(request):
     return data_json_response(Authenticator.objects.all())
 

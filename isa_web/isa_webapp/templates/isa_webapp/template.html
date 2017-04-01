@@ -35,6 +35,10 @@
          <div class="navbar-collapse collapse">
            <ul class="nav navbar-nav navbar-right">
               {% if auth %}
+                {% if auth_name %}
+                <!--TODO: Link this to user profile page once it is working . . . -->
+                <li><a href="#">Welcome {{auth_name}}!</a></li>
+                {% endif %}
                 <li><a href="/isa_web/logout" class="btn btn-black"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
               {% else %}
                 <li><a href="/isa_web/login" class="btn btn-black"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>

@@ -1,7 +1,26 @@
 {% extends "isa_webapp/template.html" %}
 {% block title %}Product Details{% endblock %}
+{% load filters %}
 {% block body_block %}
-<h1> Login! </h1>
-
+<div style="text-align:center;">
+    <h1>Sign In</h1>
+</div>
+{{ error }}
+<form action="/isa_web/login/" method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group">
+        {{ form.email.errors }}
+        {{ form.email.label_tag }}
+        {{ form.email|addclass:'form-control' }}
+        {{ form.password.errors }}
+        {{ form.password.label_tag }}
+        {{ form.password|addclass:'form-control' }}
+    </div>
+    <div>
+        <input type="submit" value="Login" class="btn btn-warning"/>
+    </div>
+</form>
+<br/>
 <a href="/isa_web/createaccount">Create Account</a>
 {% endblock %}

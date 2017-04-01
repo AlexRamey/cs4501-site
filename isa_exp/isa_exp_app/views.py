@@ -131,6 +131,10 @@ def createaccount(request):
     signupResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/users/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
     return JsonResponse(signupResponse)
 
+def login(request):
+    loginResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/login/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
+    return JsonResponse(loginResponse)
+
 # HELPER METHODS
 def getJsonReponseObject(url, method="GET", data=None):
     req = urllib.request.Request(url, method=method, data=data)

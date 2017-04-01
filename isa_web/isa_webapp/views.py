@@ -1,4 +1,4 @@
-from .forms import CreateAccountForm
+from .forms import CreateAccountForm, LoginForm
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
@@ -10,15 +10,19 @@ import json
 import datetime
 
 def base(request):
-    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/hotitems')
     context = {}
     context["auth"] = request.COOKIES.get('auth') 
+    context["auth_name"] = request.COOKIES.get('auth_name')
+
+    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/hotitems')
     context['hot_items'] = resp["data"]
+
     return render(request, 'isa_webapp/base.html', context)
 
 def searchproduct(request):
     context = {}
-    context["auth"] = request.COOKIES.get('auth') 
+    context["auth"] = request.COOKIES.get('auth')
+    context["auth_name"] = request.COOKIES.get('auth_name')
 
     req = urllib.request.Request('http://exp-api:8000/isa_experience/api/v1/searchresults')
 
@@ -31,7 +35,8 @@ def searchproduct(request):
 
 def productdetails(request, id):
     context = {}
-    context["auth"] = request.COOKIES.get('auth') 
+    context["auth"] = request.COOKIES.get('auth')
+    context["auth_name"] = request.COOKIES.get('auth_name')
 
     req = urllib.request.Request('http://exp-api:8000/isa_experience/api/v1/productdetails/' +id+ '/')
 
@@ -46,6 +51,7 @@ def productdetails(request, id):
 def userprofile(request):
     context = {}
     context["auth"] = request.COOKIES.get('auth')
+    context["auth_name"] = request.COOKIES.get('auth_name')
 
     response = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/:1/')
     return render(request, 'isa_webapp/user_profile.html', context)
@@ -53,6 +59,7 @@ def userprofile(request):
 def createaccount(request):
     context = {}
     context["auth"] = request.COOKIES.get('auth')
+    context["auth_name"] = request.COOKIES.get('auth_name')
 
     if request.method == "POST":
         form = CreateAccountForm(request.POST)
@@ -64,6 +71,7 @@ def createaccount(request):
                 response = HttpResponseRedirect(reverse('base'))
                 expiration = datetime.datetime.now() + datetime.timedelta(weeks=1)
                 response.set_cookie("auth", value=resp["data"][0]["auth"], expires=expiration, httponly=True)
+                response.set_cookie("auth_name", value=resp["data"][0]["fields"]["first_name"], exipres=expiration, httponly=True)
                 return response
             else:
                 context["error"] = "Failed to create user :("
@@ -78,11 +86,33 @@ def createaccount(request):
 def login(request):
     context = {}
     context["auth"] = request.COOKIES.get('auth')
-    return render(request, 'isa_webapp/login.html')
+    context["auth_name"] = request.COOKIES.get('auth_name')
+
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/login/', "POST", urllib.parse.urlencode(form.cleaned_data).encode('utf-8'))
+            if resp["response"] == "success":
+                # Set Cookie!
+                response = HttpResponseRedirect(reverse('base'))
+                expiration = datetime.datetime.now() + datetime.timedelta(weeks=1)
+                response.set_cookie("auth", value=resp["data"][0]["auth"], expires=expiration, httponly=True)
+                response.set_cookie("auth_name", value=resp["data"][0]["fields"]["first_name"], expires=expiration, httponly=True)
+                return response
+            else:
+                context["error"] = resp["error"]["msg"]
+
+    else: # GET
+        form = LoginForm()
+
+    context["form"] = form
+    return render(request, 'isa_webapp/login.html', context)
 
 def logout(request):
     response = HttpResponseRedirect(reverse('base'))
     response.delete_cookie("auth")
+    response.delete_cookie("auth_name")
     return response
 
 def getJsonReponseObject(url, method="GET", data=None):
