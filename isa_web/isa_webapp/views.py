@@ -10,56 +10,51 @@ import json
 import datetime
 
 def base(request):
-    context = {}
-    context["auth"] = request.COOKIES.get('auth') 
-    context["auth_name"] = request.COOKIES.get('auth_name')
+    context = getInitialContext(request)
 
     resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/hotitems')
+
+    # TODO: Handle if resp["response"] == "failure"
+
     context['hot_items'] = resp["data"]
 
     return render(request, 'isa_webapp/base.html', context)
 
 def searchproduct(request):
-    context = {}
-    context["auth"] = request.COOKIES.get('auth')
-    context["auth_name"] = request.COOKIES.get('auth_name')
+    context = getInitialContext(request)
 
-    req = urllib.request.Request('http://exp-api:8000/isa_experience/api/v1/searchresults')
+    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/searchresults')
 
-    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-    resp = json.loads(resp_json)
+    # TODO: Handle if resp["response"] == "failure"
 
-    context['response'] = resp
+    context['response'] = resp # TODO: this needs to be more granular
 
     return render(request, 'isa_webapp/search_product.html', context)
 
 def productdetails(request, id):
-    context = {}
-    context["auth"] = request.COOKIES.get('auth')
-    context["auth_name"] = request.COOKIES.get('auth_name')
+    context = getInitialContext(request)
 
-    req = urllib.request.Request('http://exp-api:8000/isa_experience/api/v1/productdetails/' +id+ '/')
+    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/productdetails/' +id+ '/')
 
-    resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-    resp = json.loads(resp_json)
+    # TODO: Handle if resp["response"] == "failure"
 
-    context['response'] = resp
+    context['response'] = resp # TODO: this needs to be more granular
 
     return render(request, 'isa_webapp/product_details.html', context)
 
 # TODO: userprofile should accept a user id as a parameter
 def userprofile(request):
-    context = {}
-    context["auth"] = request.COOKIES.get('auth')
-    context["auth_name"] = request.COOKIES.get('auth_name')
+    context = getInitialContext(request)
 
     response = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/:1/')
+    
+    # TODO: Handle if resp["response"] == "failure"  
+    # TODO: Put information found in response in context so the template can access it  
+
     return render(request, 'isa_webapp/user_profile.html', context)
 
 def createaccount(request):
-    context = {}
-    context["auth"] = request.COOKIES.get('auth')
-    context["auth_name"] = request.COOKIES.get('auth_name')
+    context = getInitialContext(request)
 
     if request.method == "POST":
         form = CreateAccountForm(request.POST)
@@ -67,14 +62,9 @@ def createaccount(request):
         if form.is_valid():
             resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createaccount/', "POST", urllib.parse.urlencode(form.cleaned_data).encode('utf-8'))
             if resp["response"] == "success":
-                # Set Cookie!
-                response = HttpResponseRedirect(reverse('base'))
-                expiration = datetime.datetime.now() + datetime.timedelta(weeks=1)
-                response.set_cookie("auth", value=resp["data"][0]["auth"], expires=expiration, httponly=True)
-                response.set_cookie("auth_name", value=resp["data"][0]["fields"]["first_name"], exipres=expiration, httponly=True)
-                return response
+                return getRedirectResponseThatSetsAuthCookies(resp, reverse('base'))
             else:
-                context["error"] = "Failed to create user :("
+                context["error"] = resp["error"]["msg"]
     
     else: # GET
         form = CreateAccountForm()
@@ -84,9 +74,7 @@ def createaccount(request):
     return render(request, 'isa_webapp/create_account.html', context)
 
 def login(request):
-    context = {}
-    context["auth"] = request.COOKIES.get('auth')
-    context["auth_name"] = request.COOKIES.get('auth_name')
+    context = getInitialContext(request)
 
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -94,12 +82,7 @@ def login(request):
         if form.is_valid():
             resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/login/', "POST", urllib.parse.urlencode(form.cleaned_data).encode('utf-8'))
             if resp["response"] == "success":
-                # Set Cookie!
-                response = HttpResponseRedirect(reverse('base'))
-                expiration = datetime.datetime.now() + datetime.timedelta(weeks=1)
-                response.set_cookie("auth", value=resp["data"][0]["auth"], expires=expiration, httponly=True)
-                response.set_cookie("auth_name", value=resp["data"][0]["fields"]["first_name"], expires=expiration, httponly=True)
-                return response
+                return getRedirectResponseThatSetsAuthCookies(resp, reverse('base'))
             else:
                 context["error"] = resp["error"]["msg"]
 
@@ -115,6 +98,7 @@ def logout(request):
     response.delete_cookie("auth_name")
     return response
 
+# HELPER METHODS
 def getJsonReponseObject(url, method="GET", data=None):
 
     req = urllib.request.Request(url, method=method, data=data)
@@ -130,8 +114,16 @@ def getJsonReponseObject(url, method="GET", data=None):
 
     return json.loads(resp_json)
 
-def getJsonResponseForLayerOneError(resp):
-    return JsonResponse({"response" : "failure", "error" : {"msg" : resp["error"]["msg"]}})
+def getInitialContext(request):
+    context = {}
+    context["auth"] = request.COOKIES.get('auth')
+    context["auth_name"] = request.COOKIES.get('auth_name')
+    return context
 
-    return json.loads(resp_json)
+def getRedirectResponseThatSetsAuthCookies(successResponseWithAuth, redirectPath):
+    response = HttpResponseRedirect(redirectPath)
+    expiration = datetime.datetime.now() + datetime.timedelta(weeks=1)
+    response.set_cookie("auth", value=successResponseWithAuth["data"][0]["auth"], expires=expiration, httponly=True)
+    response.set_cookie("auth_name", value=successResponseWithAuth["data"][0]["fields"]["first_name"], expires=expiration, httponly=True)
+    return response
 
