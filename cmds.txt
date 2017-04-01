@@ -1,0 +1,10 @@
+1. docker run -it --name models -v /Users/alexramey/cs4501/app/cs4501-site/isa_site:/app -p 8001:8000 --link mysql:db tp33/django
+
+(You may need to run migrations as seen in docker-compose.yml depending on your db state)
+
+2. docker run -it --name exp -v /Users/alexramey/cs4501/app/cs4501-site/isa_exp:/app -p 8002:8000 --link models:models-api tp33/django
+
+3. docker run -it --name web -v /Users/alexramey/cs4501/app/cs4501-site/isa_web:/app -p 8003:8000 --link exp:exp-api tp33/django
+
+
+For each of the containers above, run python manage.py runserver 0.0.0.0:8000 (models then exp then web)

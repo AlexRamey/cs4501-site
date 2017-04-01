@@ -1,5 +1,66 @@
 {% extends "isa_webapp/template.html" %}
 {% block title %}Product Details{% endblock %}
+{% load filters %}
 {% block body_block %}
-<h1> Create Account! </h1>
+<div style="text-align:center;">
+    <h1>Sign Up</h1>
+</div>
+<form action="/isa_web/createaccount/" method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group">
+        {{ form.email.errors }}
+        {{ form.email.label_tag }}
+        {{ form.email|addclass:'form-control' }}
+        {{ form.password.errors }}
+        {{ form.password.label_tag }}
+        {{ form.password|addclass:'form-control' }}
+    </div>
+    <div class="form-group row">
+        <div class="col-xs-4">
+            {{ form.first_name.errors }}
+            {{ form.first_name.label_tag }}
+            {{ form.first_name|addclass:'form-control' }}
+        </div>
+        <div class="col-xs-4">
+            {{ form.last_name.errors }}
+            {{ form.last_name.label_tag }}
+            {{ form.last_name|addclass:'form-control' }}
+        </div>
+        <div class="col-xs-4">
+            {{ form.phone_number.errors }}
+            {{ form.phone_number.label_tag }}
+            {{ form.phone_number|addclass:'form-control' }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form.ship_address.errors }}
+        {{ form.ship_address.label_tag }}
+        {{ form.ship_address|addclass:'form-control' }}
+    </div>
+    <div class= "form-group row">
+        <div class="col-xs-4">
+            {{ form.ship_city.errors }}
+            {{ form.ship_city.label_tag }}
+            {{ form.ship_city|addclass:'form-control' }}
+        </div>
+        <div class="col-xs-4">
+            {{ form.ship_postal_code.errors }}
+            {{ form.ship_postal_code.label_tag }}
+            {{ form.ship_postal_code|addclass:'form-control' }}
+        </div>
+        <div class="col-xs-4">
+            {{ form.ship_country.errors }}
+            {{ form.ship_country.label_tag }}
+            {{ form.ship_country|addclass:'form-control' }}
+        </div>
+        {{ form.buyer_rating.errors }}
+        {{ form.buyer_rating }}
+        {{ form.seller_rating.errors }}
+        {{ form.seller_rating }}
+    </div>
+    <div>
+        <input type="submit" value="Create Account" class="btn btn-warning"/>
+    </div>
+</form>
 {% endblock %}

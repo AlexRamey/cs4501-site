@@ -127,10 +127,13 @@ def user_profile(request, user_id):
     # Return final result
     return getJsonResponseForResults(results)
 
+def createaccount(request):
+    signupResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/users/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
+    return JsonResponse(signupResponse)
 
 # HELPER METHODS
-def getJsonReponseObject(url):
-    req = urllib.request.Request(url)
+def getJsonReponseObject(url, method="GET", data=None):
+    req = urllib.request.Request(url, method=method, data=data)
     
     try:
         resp_json = urllib.request.urlopen(req).read().decode('utf-8')

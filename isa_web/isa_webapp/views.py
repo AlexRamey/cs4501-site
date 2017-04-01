@@ -1,11 +1,10 @@
+from .forms import CreateAccountForm
 from django.shortcuts import render
-
 from django.shortcuts import render_to_response
-
-
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from urllib.error import URLError, HTTPError
 import urllib.request
+import urllib
 import json
 
 
@@ -70,17 +69,31 @@ def userprofile(request):
         return getJsonResponseForLayerOneError(response)
 
 def createaccount(request):
-    return render(request, 'isa_webapp/create_account.html')
+    if request.method == "POST":
+        form = CreateAccountForm(request.POST)
+
+        if form.is_valid():
+            resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createaccount/', "POST", urllib.parse.urlencode(form.cleaned_data).encode('utf-8'))
+            result = resp["response"]
+
+            return HttpResponseRedirect("/isa_webapp/?result=" + result)
+    
+    else: # GET
+        form = CreateAccountForm()
+
+    context = {}
+    context["form"] = form
+    return render(request, 'isa_webapp/create_account.html', context)
 
 def login(request):
     return render(request, 'isa_webapp/login.html')
 
-def getJsonReponseObject(url):
+def getJsonReponseObject(url, method="GET", data=None):
 
-    req = urllib.request.Request(url)
+    req = urllib.request.Request(url, method=method, data=data)
     
     try:
-        resp_json = urllib.request.urlopen(req).read().decode('utf-8').replace("\\", "")
+        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
     except HTTPError as e:
         errorMessage = "HTTP Error: " + str(e.code)
         return JsonResponse({"response" : "failure", "error" : {"msg" : errorMessage}})
