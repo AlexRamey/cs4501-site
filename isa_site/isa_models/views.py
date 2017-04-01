@@ -17,17 +17,8 @@ def users(request):
 
         if (json.loads(resp.content.decode('utf-8')))["response"] == "success":
             json_object = json.loads(resp.content.decode('utf-8'))
-            # Create a new authenticator for this user!
-            authenticator = hmac.new(
-                key = settings.SECRET_KEY.encode('utf-8'),
-                msg = os.urandom(32),
-                digestmod = 'sha256',
-            ).hexdigest()
             user_id = json_object["data"][0]["pk"]
-            auth = Authenticator(authenticator=authenticator, user=User.objects.get(pk=user_id))
-            auth.save()
-            json_object["data"][0]["auth"] = authenticator
-            resp = JsonResponse(json_object)
+            resp = user_auth_response(User.objects.get(pk=user_id))
 
         return resp
     elif request.method == "GET":
@@ -49,19 +40,7 @@ def login(request):
             users = users.filter(password=request.POST["password"])
             if len(users) > 0:
                 user = users[0]
-                authenticator = hmac.new(
-                    key = settings.SECRET_KEY.encode('utf-8'),
-                    msg = os.urandom(32),
-                    digestmod = 'sha256',
-                ).hexdigest()
-                auth = Authenticator(authenticator=authenticator, user=user)
-                auth.save()
-                resp = data_json_response([user])
-                json_object = json.loads(resp.content.decode('utf-8'))
-                json_object["data"][0]["auth"] = authenticator
-                resp = JsonResponse(json_object)
-                print(resp)
-                return resp
+                return user_auth_response(user)
 
         return JsonResponse({'response' : 'failure', 'error' : { 'msg' : 'Wrong username or password!'}})
     else:
@@ -177,3 +156,25 @@ def entity_response(request, entity, modelForm):
         return entity_deleted_json_response(type(entity).__name__)
     else:
         return HttpResponse("Invalid HTTP Method (must be GET, POST, or DELETE).", status=404)
+
+def user_auth_response(userObject):
+    # Step 1: Create the new authenticator (verify that no collision occurs)
+    authenticator = getAuthenticatorToken()
+    while len(Authenticator.objects.filter(authenticator=authenticator)) > 0:
+        authenticator = getAuthenticatorToken()
+        
+    Authenticator(authenticator=authenticator, user=userObject).save()
+
+    # Step 2: Get the typical JSON response for the user object, and inject auth token
+    resp = data_json_response([userObject])
+    json_object = json.loads(resp.content.decode('utf-8'))
+    json_object["data"][0]["auth"] = authenticator
+    resp = JsonResponse(json_object)
+    return resp
+
+def getAuthenticatorToken():
+    return hmac.new(
+        key = settings.SECRET_KEY.encode('utf-8'),
+        msg = os.urandom(32),
+        digestmod = 'sha256',
+    ).hexdigest()
