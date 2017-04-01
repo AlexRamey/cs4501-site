@@ -6,6 +6,7 @@ from isa_models.models import User, UserForm, Authenticator, Category, CategoryF
 
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.hashers import check_password, make_password
 import json
 import os
 import hmac
@@ -13,7 +14,13 @@ from django.conf import settings
 
 def users(request):
     if request.method == "POST":
-        resp = create_or_update_model_post_response(UserForm(request.POST))
+        plain_text_pswd = request.POST["password"]
+        if len(plain_text_pswd) < 5:
+            return JsonResponse({'response' : 'failure', 'error' : { 'msg' : 'Password too short! Must be at least 5 characters long.'}})
+
+        mutable_post_params = request.POST.copy()
+        mutable_post_params["password"] = make_password(plain_text_pswd, salt=None, hasher='pbkdf2_sha256')
+        resp = create_or_update_model_post_response(UserForm(mutable_post_params))
 
         if (json.loads(resp.content.decode('utf-8')))["response"] == "success":
             json_object = json.loads(resp.content.decode('utf-8'))
@@ -37,7 +44,7 @@ def login(request):
     if request.method == "POST":
         users = User.objects.filter(email=request.POST["email"])
         if len(users) > 0:
-            users = users.filter(password=request.POST["password"])
+            users = [user for user in users if check_password(request.POST["password"], user.password)]
             if len(users) > 0:
                 user = users[0]
                 return user_auth_response(user)
@@ -162,7 +169,7 @@ def user_auth_response(userObject):
     authenticator = getAuthenticatorToken()
     while len(Authenticator.objects.filter(authenticator=authenticator)) > 0:
         authenticator = getAuthenticatorToken()
-        
+
     Authenticator(authenticator=authenticator, user=userObject).save()
 
     # Step 2: Get the typical JSON response for the user object, and inject auth token
