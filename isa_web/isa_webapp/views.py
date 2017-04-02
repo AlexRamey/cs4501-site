@@ -79,6 +79,9 @@ def createaccount(request):
 
 def login(request):
     context = getInitialContext(request)
+    context["next"] = "/isa_web/login/"
+    if "next" in request.GET:
+        context["next"] +=  "?next=" + request.GET["next"]
 
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -92,10 +95,6 @@ def login(request):
                 context["error"] = resp["error"]["msg"]
 
     else: # GET
-        context["next"] = "/isa_web/login/"
-        if "next" in request.GET:
-            context["next"] +=  "?next=" + request.GET["next"]
-
         form = LoginForm()
 
     context["form"] = form
