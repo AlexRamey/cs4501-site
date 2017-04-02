@@ -6,7 +6,7 @@
     <h1>Sign In</h1>
 </div>
 {{ error }}
-<form action="/isa_web/login/" method="post">
+<form action={{ next }} method="post">
     {% csrf_token %}
     {{ form.non_field_errors }}
     <div class="form-group">
