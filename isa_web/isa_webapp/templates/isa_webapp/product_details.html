@@ -2,6 +2,10 @@
 {% block title %}Product Details{% endblock %}
 {% block body_block %}
 <body>
+{% if response.error.msg != nil %}
+<h3> Error Page </h3>
+<p><strong>Message:</strong> {{response.error.msg}}</p>
+{% else %}
 	<div style="text-align:center;">
           <h1>Product Details</h1>
     </div>
@@ -40,5 +44,6 @@
 
     	<p>{{response.data.0.fields.seller.fields.seller_rating}}</p>
     </div>
+{% endif %}
 </body>
 {% endblock %}
