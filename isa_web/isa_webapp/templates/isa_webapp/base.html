@@ -2,10 +2,9 @@
 {% block title %}Home Page{% endblock %}
 {% block body_block %}
 <div style="text-align:center;">
-      <h1>Hot Items</h1>
+      <h2>Hot Items</h2>
 </div>
 <div class = "row">
-
     {% for item in hot_items %}
         <div class="col-xs-6 hero-feature">
             <div class="thumbnail">
@@ -20,4 +19,23 @@
         </div>
     {% endfor %}
 </div>
+<div style="text-align:center;">
+      <h2>New Products for Sale!</h2>
+</div>
+<div class = "row">
+    {% for item in new_posts %}
+        <div class="col-xs-6 hero-feature">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h3>{{item.fields.name}}</h3>
+                    <p>{{item.fields.name}}</p>
+                        <a class="btn btn-primary">Add to Cart</a> 
+                        <a class="btn btn-default" href="{% url 'product' item.pk %}">Detail</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
 {% endblock %}

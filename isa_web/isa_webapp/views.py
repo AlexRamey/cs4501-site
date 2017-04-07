@@ -13,11 +13,13 @@ from .decorators import login_required
 def base(request):
     context = getInitialContext(request)
 
+    # Microservice 1 Call: Hot Items
     resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/hotitems')
-
-    # TODO: Handle if resp["response"] == "failure"
-
     context['hot_items'] = resp["data"]
+    
+    # Microservice 2 Call: New Posts
+    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/newposts')
+    context['new_posts'] = resp["data"]
 
     return render(request, 'isa_webapp/base.html', context)
 

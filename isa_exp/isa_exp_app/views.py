@@ -54,6 +54,32 @@ def hot_items(request):
     else:
         return getJsonResponseForResults(results)
 
+def new_posts(request):
+    # Get all the products
+    resp = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products')
+
+    # Verify that no error occurred here
+    if resp["response"] == "failure":
+        return getJsonResponseForLayerOneError(resp)
+
+    # Grab the two products (in stock) with the newest ids
+    results = resp["data"]
+    new_posts = filter(lambda product: (product["fields"]["stock"] > 0) and (product["fields"]["sold"] == False), results)
+    new_posts = sorted(new_posts, key=lambda product: product["pk"], reverse=True)
+    if (len(new_posts) > 3):
+        results = new_posts[:4]
+    else:
+        results = new_posts
+
+    # Hydrate the associated seller info, category info, and condition info
+    result = hydrateAssociatedModels(results, [["users/", "seller"], ["categories/", "category"], ["conditions/", "condition"]])
+    
+    # Return the appropriate JsonRespose (either error or success)
+    if result != None:
+        return result
+    else:
+        return getJsonResponseForResults(results)
+
 def product_details(request, product_id):
     # Get the specific product we care about
     resp = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/' + product_id)
