@@ -13,9 +13,9 @@ urlpatterns = [
 
     url(r'^users/$', users, name = "users"),
     url(r'^users/(?P<user_id>\d+)/$', user, name="user"),
-    url(r'^users/(?P<buyer_id>\d+)/purchased/$', user_purchased),
-    url(r'^users/(?P<seller_id>\d+)/sold/$', user_sold),
-    url(r'^users/(?P<seller_id>\d+)/selling/$', user_selling),
+    url(r'^users/(?P<buyer_id>\d+)/purchased/$', user_purchased, name="user_purchased"),
+    url(r'^users/(?P<seller_id>\d+)/sold/$', user_sold, name="user_sold"),
+    url(r'^users/(?P<seller_id>\d+)/selling/$', user_selling, name="user_selling"),
     url(r'^products/$', products, name="products"),
     url(r'^products/(?P<product_id>\d+)/$', product, name="product"),
     url(r'^orders/$', orders, name="orders"),
@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^conditions/(?P<condition_id>\d+)/$', condition, name="condition"),
     url(r'^categories/$', categories, name="categories"),
     url(r'^categories/(?P<category_id>\d+)/$', category, name = "category"),
-    url(r'^categories/(?P<category_id>\d+)/products/$', category_products),
-    # url(r'^authenticators/$', authenticators, name = "authenticators"),
+    url(r'^categories/(?P<category_id>\d+)/products/$', category_products, name="category_products"),
+    url(r'^authenticators/$', authenticators, name = "authenticators"),
     url(r'^login/$', login, name="login"),
 ]

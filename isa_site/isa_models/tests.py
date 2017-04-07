@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
-from isa_models.models import Category, Condition, Order, ProductSnapshot, User, Product
+from isa_models.models import Category, Condition, Order, ProductSnapshot, User, Product, Authenticator
 
 class GetTestCategory(TestCase):
     #setUp method is called before each test in this class
@@ -44,7 +44,13 @@ class GetTestCategory(TestCase):
     	category1 = Category.objects.get(name="Test1")
     	response = self.client.delete(reverse('category', kwargs={'category_id': category1.id}))
     	response = response.json()
-    	self.assertEquals(response['response'], 'success')		
+    	self.assertEquals(response['response'], 'success')	
+
+    def test_success_category_products(self):
+        response = self.client.get(reverse('category_products', kwargs={'category_id': 1})).json()
+        self.assertEquals(response['response'], 'success')
+        self.assertTrue(isinstance(response['data'], list))
+        self.assertTrue(len(response['data']) != 0)	
 
     # #user_id not given in url, so error
     def test_invalid_input(self):
@@ -238,7 +244,9 @@ class GetTestProduct(TestCase):
         cat_id = Category.objects.get(name="Test1")
         Condition.objects.create(name="Test1")
         con_id = Condition.objects.get(name="Test1")
+        fix_user = User.objects.get(id=1)
         Product.objects.create(seller=num_id, name="XYZQWE DVD", description="NA", category=cat_id, price=10.0, stock=2, sold=False, condition=con_id)
+        Authenticator.objects.create(user=fix_user, authenticator="vlq6IxgWn8")
 
     def test_success_response(self):
         response = self.client.get(reverse('products')).json()
@@ -263,8 +271,8 @@ class GetTestProduct(TestCase):
     	self.assertTrue(len(response['data']) == 1)
 
     def test_success_create_response(self):
-    	response = self.client.post(reverse('products'), {'seller' : 2, 'name' : "Test1Product", 'description' : "N/A", 'category' : 1, 'price' : 250.0, 'stock' : 1, 'sold' : False, 'condition' : 2})
-    	response = response.json()
+    	auth_user1 = "vlq6IxgWn8"
+    	response = self.client.post(reverse('products'), {'seller' : auth_user1, 'name' : "Test1Product", 'description' : "N/A", 'category' : 1, 'price' : 250.0, 'stock' : 1, 'sold' : False, 'condition' : 2}).json()
     	self.assertEquals(response['response'], 'success')
     	self.assertTrue(isinstance(response['data'], list))
     	self.assertEquals(response['data'][0]['fields']['name'], "Test1Product")
@@ -279,7 +287,6 @@ class GetTestProduct(TestCase):
     def test_invalid_input(self):
         response = self.client.get(reverse('product', kwargs={'product_id': 1000}))
         self.assertEquals(response.status_code, 200) 
-
 
     def tearDown(self):
         pass #nothing to tear down
@@ -328,9 +335,53 @@ class GetTestUser(TestCase):
     	response = response.json()
     	self.assertEquals(response['response'], 'success')
 
+    def test_success_user_sold(self):
+        response = self.client.get(reverse('user_sold', kwargs={'seller_id': 1})).json()
+        self.assertEquals(response['response'], 'success')
+        self.assertTrue(isinstance(response['data'], list))
+        self.assertTrue(len(response['data']) != 0)
+
+    def test_success_user_selling(self):
+        response = self.client.get(reverse('user_selling', kwargs={'seller_id': 1})).json()
+        self.assertEquals(response['response'], 'success')
+        self.assertTrue(isinstance(response['data'], list))
+        self.assertTrue(len(response['data']) != 0)
+
+    def test_success_user_purchased(self):
+        response = self.client.get(reverse('user_purchased', kwargs={'buyer_id': 1})).json()
+        self.assertEquals(response['response'], 'success')
+        self.assertTrue(isinstance(response['data'], list))
+        self.assertTrue(len(response['data']) != 0)
+
     def test_invalid_input(self):
         response = self.client.get(reverse('user', kwargs={'user_id': 1000}))
         self.assertEquals(response.status_code, 200) 
     
     def tearDown(self):
         pass #nothing to tear down
+
+class GetTestAuthenticator(TestCase):
+    fixtures = ["fixture1.json"]
+
+    def setUp(self):
+        self.client = Client()
+        User.objects.create(email="vj@virginia.edu", password="password", first_name="vj", last_name="edup", phone_number="1-987-654-3210", ship_address='123 John Street', ship_city="Cville", ship_postal_code="22903", ship_country="USA", buyer_rating=100.0, seller_rating=100.0)
+        num_id = User.objects.get(first_name="vj")
+        Authenticator.objects.create(user=num_id, authenticator="vlq6IxgWn8")
+
+    def test_success_response(self):
+        response = self.client.post(reverse('authenticators')).json()
+        self.assertEquals(response['response'], 'success')
+        self.assertTrue(isinstance(response['data'], list))
+        #self.assertTrue(len(response['data']) != 0)
+
+    def test_success_login(self):
+        #password = "password"
+        response = self.client.post(reverse('login'), {'email' : "hank@thehill.com", 'password' : "password"})
+        response = response.json()
+        self.assertEquals(response['response'], 'success')        
+
+    def test_failure_login(self):
+        response = self.client.post(reverse('login'), {'email' : "hank@thehill.com", 'password' : "WRONGpassword"})
+        response = response.json()
+        self.assertEquals(response['response'], 'failure') 
