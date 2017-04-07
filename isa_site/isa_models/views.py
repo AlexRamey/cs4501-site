@@ -59,13 +59,14 @@ def products(request):
         authenticator = request.POST["seller"]
         today = datetime.date.today()
         one_week_ago = today - datetime.timedelta(weeks=1)
-        authenticators = Authenticator.objects.filter(authenticator=authenticator).filter(created_at__range=[one_week_ago, today])
+        authenticators = Authenticator.objects.filter(authenticator=authenticator).filter(date_created__range=[one_week_ago, today])
         if (len(authenticators) == 0):
             return JsonResponse({'response' : 'failure', 'error' : { 'msg' : 'Invalid credentials!'}})
         else:
             mutable_post_params = request.POST.copy()
-            mutable_post_params["seller"] = authenticators[0].user
-            resp = create_or_update_model_post_response(UserForm(mutable_post_params))
+            mutable_post_params["seller"] = str(authenticators[0].user.id)
+            print(mutable_post_params)
+            resp = create_or_update_model_post_response(ProductForm(mutable_post_params))
             return resp
             
     elif request.method == "GET":

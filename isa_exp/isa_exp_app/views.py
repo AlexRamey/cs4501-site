@@ -163,7 +163,7 @@ def createlisting(request):
 
     else: # POST
         listingResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
-        return listingResponse(loginResponse)
+        return JsonResponse(listingResponse)
 
 # HELPER METHODS
 def getJsonReponseObject(url, method="GET", data=None):

@@ -8,6 +8,7 @@ import urllib.request
 import urllib
 import json
 import datetime
+from .decorators import login_required
 
 def base(request):
     context = getInitialContext(request)
@@ -45,7 +46,7 @@ def productdetails(request, id):
 # TODO: userprofile should show a lot more info such as a user's listing (products where they are the seller)
             # this info is already provided by the experience layer API so get it out of the resp object 
 # TODO: userprofile should accept a user id as a parameter
-# TODO: userprofile should have a login guard around it
+@login_required
 def userprofile(request):
     context = getInitialContext(request)
 
@@ -97,6 +98,9 @@ def createaccount(request):
 
 def login(request):
     context = getInitialContext(request)
+    context["next"] = "/isa_web/login/"
+    if "next" in request.GET:
+        context["next"] +=  "?next=" + request.GET["next"]
 
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -104,7 +108,8 @@ def login(request):
         if form.is_valid():
             resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/login/', "POST", urllib.parse.urlencode(form.cleaned_data).encode('utf-8'))
             if resp["response"] == "success":
-                return getRedirectResponseThatSetsAuthCookies(resp, reverse('base'))
+                next_path = request.GET.get("next", reverse('base'))
+                return getRedirectResponseThatSetsAuthCookies(resp, next_path)
             else:
                 context["error"] = resp["error"]["msg"]
 
@@ -124,12 +129,21 @@ def logout(request):
         context = getInitialContext(request)
         return render(request, 'isa_webapp/logout.html', context)
 
-# TODO: create listing should have a login guard around it
+@login_required
 def createlisting(request):
     context = getInitialContext(request)
+    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting')
+
+    if resp["response"] == "failure":
+        return HttpResponseRedirect(reverse('base'))
+
+    categories = resp["data"]["categories"]
+    categories = map((lambda category: (category["pk"], category["fields"]["name"])), categories)
+    conditions = resp["data"]["conditions"]
+    conditions = map((lambda condition: (condition["pk"], condition["fields"]["name"])), conditions)
 
     if request.method == "POST":
-        form = CreateListingForm(request.POST)
+        form = CreateListingForm(categories, conditions, context["auth"], request.POST)
 
         if form.is_valid():
             resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting/', "POST", urllib.parse.urlencode(form.cleaned_data).encode('utf-8'))
@@ -141,18 +155,7 @@ def createlisting(request):
                 context["error"] = resp["error"]["msg"]
 
     else: # GET
-        resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting')
-
-        if resp["response"] == "failure":
-            return HttpResponseRedirect(reverse('base'))
-
-        categories = resp["data"]["categories"]
-        categories = map((lambda category: (category["pk"], category["fields"]["name"])), categories)
-        conditions = resp["data"]["conditions"]
-        conditions = map((lambda condition: (condition["pk"], condition["fields"]["name"])), conditions)
-
-        form = CreateListingForm()
-        form.initialize(categories, conditions, context["auth"])
+        form = CreateListingForm(categories, conditions, context["auth"])
 
     context["form"] = form
     return render(request, 'isa_webapp/create_listing.html', context)
@@ -187,4 +190,3 @@ def getRedirectResponseThatSetsAuthCookies(successResponseWithAuth, redirectPath
     response.set_cookie("auth_name", value=successResponseWithAuth["data"][0]["fields"]["first_name"], expires=expiration, httponly=True)
     response.set_cookie("auth_id", value=successResponseWithAuth["data"][0]["pk"], expires=expiration, httponly=True)
     return response
-
