@@ -62,7 +62,7 @@ def new_posts(request):
     if resp["response"] == "failure":
         return getJsonResponseForLayerOneError(resp)
 
-    # Grab the two products (in stock) with the newest ids
+    # Grab the four products (in stock) with the newest ids
     results = resp["data"]
     new_posts = filter(lambda product: (product["fields"]["stock"] > 0) and (product["fields"]["sold"] == False), results)
     new_posts = sorted(new_posts, key=lambda product: product["pk"], reverse=True)

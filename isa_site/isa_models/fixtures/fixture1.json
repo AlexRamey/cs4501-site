@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$30000$LyLBRhepqzqZ$nn9EXhTsbfDLa2T3g6LXTLoy3TnJjRmchNKWvWlzhJw=",
-        "last_login": "2017-02-15T21:41:19.505Z",
+        "last_login": "2017-04-04T07:39:59.887Z",
         "is_superuser": true,
         "username": "root",
         "first_name": "",
@@ -23,6 +23,14 @@
     "fields": {
         "session_data": "NzgzNjY1MTI5NzI5NGM0MWQ2MmVmOGRiZGI4NTA0ZDg5MDczMThjNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2hhc2giOiI2MGUzNzQ1NmJkNjlhN2MyMGIyYjNmYjdhNmVjMjgwYjg0ODdiODExIn0=",
         "expire_date": "2017-03-01T21:41:19.509Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "j1yyn4u9bm3rzwmtchv8h3dmyor2ayl2",
+    "fields": {
+        "session_data": "NDczNjMwYzBjZDM5NTMwMDBmYTBhNGUyYjkxYjVkNDk3NGIwM2Q0Mzp7Il9hdXRoX3VzZXJfaGFzaCI6IjYwZTM3NDU2YmQ2OWE3YzIwYjJiM2ZiN2E2ZWMyODBiODQ4N2I4MTEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=",
+        "expire_date": "2017-04-18T07:39:59.890Z"
     }
 },
 {
@@ -91,6 +99,759 @@
         "ship_country": "usa",
         "buyer_rating": 50.0,
         "seller_rating": 90.4
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 5,
+    "fields": {
+        "email": "bob@hotfix.com",
+        "password": "pswd",
+        "first_name": "bob",
+        "last_name": "thebuilder",
+        "phone_number": "lakjdf",
+        "ship_address": "dkjf",
+        "ship_city": "jkj",
+        "ship_postal_code": "kj",
+        "ship_country": "kj",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 6,
+    "fields": {
+        "email": "bob1@hotfix.com",
+        "password": "password",
+        "first_name": "bob",
+        "last_name": "thebuilder",
+        "phone_number": "lakjdf",
+        "ship_address": "dkjf",
+        "ship_city": "jkj",
+        "ship_postal_code": "kj",
+        "ship_country": "kj",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 7,
+    "fields": {
+        "email": "bob2@hotfix.com",
+        "password": "password",
+        "first_name": "bob",
+        "last_name": "thebuilder",
+        "phone_number": "lakjdf",
+        "ship_address": "dkjf",
+        "ship_city": "jkj",
+        "ship_postal_code": "kj",
+        "ship_country": "kj",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 8,
+    "fields": {
+        "email": "bob2@hotfix.com",
+        "password": "pswd",
+        "first_name": "bob",
+        "last_name": "thebuilder",
+        "phone_number": "lakjdf",
+        "ship_address": "dkjf",
+        "ship_city": "jkj",
+        "ship_postal_code": "kj",
+        "ship_country": "kj",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 9,
+    "fields": {
+        "email": "bob2@hotfix.com",
+        "password": "pswd",
+        "first_name": "bob",
+        "last_name": "thebuilder",
+        "phone_number": "lakjdf",
+        "ship_address": "dkjf",
+        "ship_city": "jkj",
+        "ship_postal_code": "kj",
+        "ship_country": "kj",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 10,
+    "fields": {
+        "email": "bob3@hotfix.com",
+        "password": "pswd",
+        "first_name": "bob",
+        "last_name": "thebuilder",
+        "phone_number": "lakjdf",
+        "ship_address": "dkjf",
+        "ship_city": "jkj",
+        "ship_postal_code": "kj",
+        "ship_country": "kj",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 11,
+    "fields": {
+        "email": "bob3@hotfix.com",
+        "password": "pswd",
+        "first_name": "bob",
+        "last_name": "thebuilder",
+        "phone_number": "lakjdf",
+        "ship_address": "dkjf",
+        "ship_city": "jkj",
+        "ship_postal_code": "kj",
+        "ship_country": "kj",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 12,
+    "fields": {
+        "email": "bob@hotfix.com",
+        "password": "pasw",
+        "first_name": "klj",
+        "last_name": "kj",
+        "phone_number": "jk",
+        "ship_address": "k",
+        "ship_city": "k",
+        "ship_postal_code": "k",
+        "ship_country": "k",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 13,
+    "fields": {
+        "email": "bob@hotfix.com",
+        "password": "pswd",
+        "first_name": "hi",
+        "last_name": "hi",
+        "phone_number": "hi",
+        "ship_address": "hi",
+        "ship_city": "hi",
+        "ship_postal_code": "hi",
+        "ship_country": "hi",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 14,
+    "fields": {
+        "email": "bob2@hotfix.com",
+        "password": "pswd",
+        "first_name": "a",
+        "last_name": "a",
+        "phone_number": "d",
+        "ship_address": "d",
+        "ship_city": "d",
+        "ship_postal_code": "d",
+        "ship_country": "d",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 15,
+    "fields": {
+        "email": "bob@hotfix.com",
+        "password": "pswd",
+        "first_name": "hi",
+        "last_name": "hi",
+        "phone_number": "hi",
+        "ship_address": "hi",
+        "ship_city": "hi",
+        "ship_postal_code": "hi",
+        "ship_country": "hi",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 16,
+    "fields": {
+        "email": "bob@hotfix.com",
+        "password": "pswd",
+        "first_name": "hi",
+        "last_name": "hi",
+        "phone_number": "hi",
+        "ship_address": "hi",
+        "ship_city": "hi",
+        "ship_postal_code": "hi",
+        "ship_country": "hi",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 17,
+    "fields": {
+        "email": "bob@hotfix.com",
+        "password": "pswd",
+        "first_name": "hi",
+        "last_name": "hi",
+        "phone_number": "hi",
+        "ship_address": "hi",
+        "ship_city": "hi",
+        "ship_postal_code": "hi",
+        "ship_country": "hi",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 18,
+    "fields": {
+        "email": "ericchurch@yahoo.com",
+        "password": "password",
+        "first_name": "eric",
+        "last_name": "church",
+        "phone_number": "1234567891",
+        "ship_address": "1 nashville way",
+        "ship_city": "nashville,tn",
+        "ship_postal_code": "23134",
+        "ship_country": "usa",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 19,
+    "fields": {
+        "email": "john@apple.com",
+        "password": "password",
+        "first_name": "john",
+        "last_name": "appleseed",
+        "phone_number": "234",
+        "ship_address": "100 apple road",
+        "ship_city": "birmingham, AL",
+        "ship_postal_code": "34567",
+        "ship_country": "usa",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 20,
+    "fields": {
+        "email": "bob@target.com",
+        "password": "password",
+        "first_name": "bob",
+        "last_name": "thebuilder",
+        "phone_number": "1234567890",
+        "ship_address": "100 builders way",
+        "ship_city": "omaha",
+        "ship_postal_code": "23456",
+        "ship_country": "usa",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 21,
+    "fields": {
+        "email": "fox@theman.com",
+        "password": "foxman",
+        "first_name": "fox",
+        "last_name": "MAN",
+        "phone_number": "hi",
+        "ship_address": "hi",
+        "ship_city": "hi",
+        "ship_postal_code": "hi",
+        "ship_country": "hi",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 22,
+    "fields": {
+        "email": "fox@town.com",
+        "password": "foxman",
+        "first_name": "hi",
+        "last_name": "hi",
+        "phone_number": "hi",
+        "ship_address": "hi",
+        "ship_city": "hi",
+        "ship_postal_code": "hi",
+        "ship_country": "hi",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 23,
+    "fields": {
+        "email": "hank@thehill.com",
+        "password": "pbkdf2_sha256$30000$TSmJbRYuhqo6$FEBKQf/LD9oq/FUJ4RqHfNJVU+t6tYlYv6A5ic6Priw=",
+        "first_name": "hank",
+        "last_name": "hill",
+        "phone_number": "2345678567",
+        "ship_address": "101 alamo street",
+        "ship_city": "dallas, tx",
+        "ship_postal_code": "92394",
+        "ship_country": "usa",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 24,
+    "fields": {
+        "email": "adam@site.com",
+        "password": "pbkdf2_sha256$30000$pZQOkdHzE5EP$X+56AOB1B43uQu7TWVCtzdZ7UF11TLRpIjQgf/aXUD4=",
+        "first_name": "adam",
+        "last_name": "guo",
+        "phone_number": "21233244",
+        "ship_address": "lakdjflkadjf",
+        "ship_city": "Charlottesville, VA",
+        "ship_postal_code": "22903",
+        "ship_country": "United States",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.user",
+    "pk": 25,
+    "fields": {
+        "email": "alex@yahoo.com",
+        "password": "pbkdf2_sha256$30000$9YAOCo1kS1v2$mkUNQ9e6ziK4aUKrlrwY1KeTAHSUNkyAOhXZb9Gv6rg=",
+        "first_name": "alex",
+        "last_name": "ramey",
+        "phone_number": "423-227-1769",
+        "ship_address": "1010 east brow road",
+        "ship_city": "Lookout Mountain",
+        "ship_postal_code": "37350",
+        "ship_country": "United States",
+        "buyer_rating": 100.0,
+        "seller_rating": 100.0
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 1,
+    "fields": {
+        "user": 9,
+        "authenticator": "1a12537c52d5441499c7cf716c0940470305db210da6e3607e3eda4d2912c660",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 2,
+    "fields": {
+        "user": 10,
+        "authenticator": "6c4b3582181f580db7a7279ad5ff3077e6e2f408ad5496513af98427a56aaecb",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 3,
+    "fields": {
+        "user": 11,
+        "authenticator": "a59ed9bce30f186a689f4441cfd5d5d27a2be838f34f964e6a2450bb8a717885",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 4,
+    "fields": {
+        "user": 12,
+        "authenticator": "d72346171324df80184cfc91d5a1386d8138838534a6a6c4de490a9e6582d317",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 5,
+    "fields": {
+        "user": 13,
+        "authenticator": "ca1ff7cd45065d4904849fe0b473b7803671d65e9e1c231ca9af8c66c5b0718e",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 6,
+    "fields": {
+        "user": 14,
+        "authenticator": "07ad3ebf142262f8007514f6fe551cb0502380a20d007cb1d6cd80ba6aaf9f41",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 7,
+    "fields": {
+        "user": 15,
+        "authenticator": "727b380d892d77e3092bd9abf9cb36150de2c7442f1548c633657469a73d8130",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 8,
+    "fields": {
+        "user": 16,
+        "authenticator": "0f1b489ab238a59653f823ca15d4ec718f231002f79d868ece7788bd03a2e586",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 9,
+    "fields": {
+        "user": 17,
+        "authenticator": "76e54960364352f6443e33c5ed54c9ffa2d6898547d56f97f7d4f0aecfd01539",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 10,
+    "fields": {
+        "user": 18,
+        "authenticator": "97d5a7a39db19a1558d2ee967b055815447bd36b254de15508c5a640555072d9",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 11,
+    "fields": {
+        "user": 18,
+        "authenticator": "4f090b119799c9d0d460422ee231436e251687d86c725c0de3ed6ac376bbe85d",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 12,
+    "fields": {
+        "user": 18,
+        "authenticator": "b60c26ddf96e397d992830a72c4581a86f5b647fcf79a2709104b56521230fa7",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 13,
+    "fields": {
+        "user": 18,
+        "authenticator": "d4845f62b96a721603bd33aa4e276888e517f8a30e9e3e62b05a43e4445a5b55",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 14,
+    "fields": {
+        "user": 18,
+        "authenticator": "9cc10f440682f3db108496b93d9e8fd469a3c07dcd62f5c63f62b83e2e7ffc3b",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 15,
+    "fields": {
+        "user": 18,
+        "authenticator": "91d54108048af5cdc77d296ad108abe756f9320ffbb37515892f666db6427b58",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 16,
+    "fields": {
+        "user": 18,
+        "authenticator": "24232194f0cf31e2038483586a45fba58ae52907ea444ba19832f7e598d2b12b",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 17,
+    "fields": {
+        "user": 1,
+        "authenticator": "9b672b6beac61047c594e2f3b7b02b8c60f939f5384b82a2e7dad6f46744094b",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 18,
+    "fields": {
+        "user": 18,
+        "authenticator": "db9feb379ba6e681eb8408954f4cb5eb5710a37bc394abd82c788a1021801d5a",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 19,
+    "fields": {
+        "user": 19,
+        "authenticator": "c95457c42e6f762189f335ae9787be831e8d9e171f98a0ed9e582525fcec4b57",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 20,
+    "fields": {
+        "user": 19,
+        "authenticator": "7be6eb85f72f1da82fcbeb7a11dd7f252629fd1844e96fb4471c63a3b7890adc",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 21,
+    "fields": {
+        "user": 18,
+        "authenticator": "65873c52f3a618e8943f27b3a0c804931182c67e559ecccc400bc1a0aca50acc",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 22,
+    "fields": {
+        "user": 20,
+        "authenticator": "5db0948f5d1b33f0e9e6c94ddeb25f670d2797d5f5d7dc1bfaa21d48d07c214f",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 23,
+    "fields": {
+        "user": 20,
+        "authenticator": "f6067dcc7eb4a23ddd7890d3445e6954b45f983524991294a8cf84e1b372c244",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 24,
+    "fields": {
+        "user": 21,
+        "authenticator": "648b19749abf19ea95e4b41740b7ff47d489e252179ed767995378b2460a24f5",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 25,
+    "fields": {
+        "user": 22,
+        "authenticator": "e5747ac2b8f2a4aeffe36811ad6e3327de24b92e606432c25cb1a96031b32d11",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 26,
+    "fields": {
+        "user": 23,
+        "authenticator": "3c283824a834fb8aeff5a7fd7b0efa30255dd934e6c575019846b4ca20dd10d4",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 27,
+    "fields": {
+        "user": 23,
+        "authenticator": "aa478ae885a5a4232fd1fdb1e03e965b7d86ddd7523c0d90da200c17f0b1245e",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 28,
+    "fields": {
+        "user": 23,
+        "authenticator": "2fcb7d2233590fd47d58d84a13326fdccdaaf2e7a7efba5af99ec7b916fd50d4",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 29,
+    "fields": {
+        "user": 23,
+        "authenticator": "615221232788caf52c7c45f79f4c0552566c051a982c42e19ee651613351ec87",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 30,
+    "fields": {
+        "user": 23,
+        "authenticator": "37066312202524c13b49b1158e4272ae85953db06fc973d7fd868cd7d0ee7518",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 31,
+    "fields": {
+        "user": 24,
+        "authenticator": "cd9efe49ea0c48ad7af4692659f716e84398aeb73d19c8aa3d308c262a6b704a",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 32,
+    "fields": {
+        "user": 23,
+        "authenticator": "72f84eb651970bf22c3adef99ff9851c8785b713bbeefbf74397ab0c7f05da2e",
+        "date_created": "2017-04-01"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 33,
+    "fields": {
+        "user": 23,
+        "authenticator": "20e4909736570f41e2de8b9b881323ce4ef9e1dae1833f43f405528999710b03",
+        "date_created": "2017-04-02"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 34,
+    "fields": {
+        "user": 23,
+        "authenticator": "cd412fdddc3682e34fa2211f9b7935326f72cb5a6d70a7e6c17b029cd12513f7",
+        "date_created": "2017-04-02"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 35,
+    "fields": {
+        "user": 23,
+        "authenticator": "7838058a6c2150fb37d9f013fa942a5269a2fd2920b226bdf58e5e7924d3a2f9",
+        "date_created": "2017-04-02"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 36,
+    "fields": {
+        "user": 23,
+        "authenticator": "8ab48fc1bcff570260adfc66f2aec665d2820de60839ea305686b65c32c1c55d",
+        "date_created": "2017-04-02"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 37,
+    "fields": {
+        "user": 23,
+        "authenticator": "947ee90b555691e03375a42b21af8e557e59673957e847c330430de082d62c10",
+        "date_created": "2017-04-02"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 38,
+    "fields": {
+        "user": 23,
+        "authenticator": "3511996e214869110a336ce4bc31eed151d8a12de36895a2300dbf9b597aa5cd",
+        "date_created": "2017-04-02"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 39,
+    "fields": {
+        "user": 23,
+        "authenticator": "46607ed2f1b501d9d50a901ea372c98928c90ab66a98b7ce015e8f40e402844b",
+        "date_created": "2017-04-02"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 40,
+    "fields": {
+        "user": 23,
+        "authenticator": "be1185ffd4bb9b08d582285e60b7cced756c23b4b367eeaf226e0abe1dbf3dd7",
+        "date_created": "2017-04-02"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 41,
+    "fields": {
+        "user": 23,
+        "authenticator": "30ccddbb2ee9f7e6bbcdb3f78f1621dfad9cb8cfe968e780a9434b5e86974109",
+        "date_created": "2017-04-02"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 42,
+    "fields": {
+        "user": 23,
+        "authenticator": "f95b93c7f8c0454271dc8a620cf80c42d396096c06f8d92665fa35e6285922fa",
+        "date_created": "2017-04-02"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 43,
+    "fields": {
+        "user": 25,
+        "authenticator": "5ebb6cce698d6b0f7044fa69db5539d0ccc871667e8cf5d46b6bc252eb7a8bff",
+        "date_created": "2017-04-04"
+    }
+},
+{
+    "model": "isa_models.authenticator",
+    "pk": 44,
+    "fields": {
+        "user": 23,
+        "authenticator": "5c75c63b775147dc166de641bc2a5041c11ad70c5c11406358e68164fac8281c",
+        "date_created": "2017-04-04"
     }
 },
 {
@@ -241,6 +1002,62 @@
     }
 },
 {
+    "model": "isa_models.product",
+    "pk": 5,
+    "fields": {
+        "seller": 24,
+        "name": "A Drum Set",
+        "description": "Don't touch my drums",
+        "category": 1,
+        "price": 213.0,
+        "stock": 1,
+        "sold": false,
+        "condition": 3
+    }
+},
+{
+    "model": "isa_models.product",
+    "pk": 6,
+    "fields": {
+        "seller": 25,
+        "name": "Guitar",
+        "description": "Cool Guitar",
+        "category": 1,
+        "price": 80.0,
+        "stock": 1,
+        "sold": true,
+        "condition": 1
+    }
+},
+{
+    "model": "isa_models.product",
+    "pk": 7,
+    "fields": {
+        "seller": 25,
+        "name": "PlayStation 2",
+        "description": "This console is awesome",
+        "category": 3,
+        "price": 80.0,
+        "stock": 1,
+        "sold": false,
+        "condition": 4
+    }
+},
+{
+    "model": "isa_models.product",
+    "pk": 8,
+    "fields": {
+        "seller": 25,
+        "name": "Gumball Machine",
+        "description": "Bubble Gum Balls for 25 cents!",
+        "category": 3,
+        "price": 25.0,
+        "stock": 1,
+        "sold": false,
+        "condition": 2
+    }
+},
+{
     "model": "isa_models.productsnapshot",
     "pk": 1,
     "fields": {
@@ -358,6 +1175,60 @@
         "object_repr": "Order: The Big Lebowski DVD",
         "action_flag": 1,
         "change_message": "[{\"added\": {}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+        "action_time": "2017-04-04T07:40:32.077Z",
+        "user": [
+            "root"
+        ],
+        "content_type": [
+            "isa_models",
+            "product"
+        ],
+        "object_id": "7",
+        "object_repr": "Product: PlayStation 2",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"stock\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+        "action_time": "2017-04-04T07:40:52.844Z",
+        "user": [
+            "root"
+        ],
+        "content_type": [
+            "isa_models",
+            "product"
+        ],
+        "object_id": "7",
+        "object_repr": "Product: PlayStation 2",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"stock\"]}}]"
+    }
+},
+{
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+        "action_time": "2017-04-04T07:40:58.869Z",
+        "user": [
+            "root"
+        ],
+        "content_type": [
+            "isa_models",
+            "product"
+        ],
+        "object_id": "6",
+        "object_repr": "Product: Guitar",
+        "action_flag": 2,
+        "change_message": "[{\"changed\": {\"fields\": [\"sold\"]}}]"
     }
 }
 ]
