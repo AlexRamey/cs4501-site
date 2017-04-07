@@ -49,9 +49,28 @@ def productdetails(request, id):
 def userprofile(request):
     context = getInitialContext(request)
 
-    response = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/:1/')
-    
-    # TODO: Handle if resp["response"] == "failure"  
+    userid = context["auth_id"]
+
+    if userid == None:
+        return render()
+
+    # resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/'+userid+'/')
+    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/' + userid +'/')
+
+    if resp["response"] == "success":
+        if len(resp['data']) == 1:
+            context["fname"] = resp['data'][0]['fields']['first_name']
+            context["lname"] = resp['data'][0]['fields']['last_name']
+            context["brating"] = resp['data'][0]['fields']['buyer_rating']
+            context["srating"] = resp['data'][0]['fields']['seller_rating']
+
+            context["purchase"] = resp['data'][0]['purchases']
+            context["purchasenum"] = len(resp['data'][0]['purchases'])
+            context["sold"] = resp['data'][0]['sold']
+            context["soldnum"] = len(resp['data'][0]['sold'])
+    else:
+        context["error"] = resp["error"]["msg"]
+    # TODO: Handle if resp["response"] == "failure"
     # TODO: Put information found in response in context so the template can access it  
 
     return render(request, 'isa_webapp/user_profile.html', context)

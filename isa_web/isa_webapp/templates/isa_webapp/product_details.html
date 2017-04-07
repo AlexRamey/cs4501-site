@@ -2,19 +2,43 @@
 {% block title %}Product Details{% endblock %}
 {% block body_block %}
 <body>
-	<div class="col-sm-9 col-sm-offset-5 main">
-          <h2>Product Details</h2>
+	<div style="text-align:center;">
+          <h1>Product Details</h1>
     </div>
-    <div>
+    <div class="col-xs-6 " >
 
-        <h1> Name:</h1>
+        <h3> Name:</h3>
 
-        <h3>{{response.data.0.fields.name}}</h3>
+        <p>{{response.data.0.fields.name}}</p>
+    </div>
+    <div class="col-xs-6 ">
+        <h3> Description:</h3>
 
-        <h1> Description:</h1>
-
-    	<h3>{{response.data.0.fields.description}}</h3>
+    	<p>{{response.data.0.fields.description}}</p>
     </div>
 
+    <div class="col-xs-6 ">
+        <h3> Price:</h3>
+
+    	<p>{{response.data.0.fields.price}}</p>
+    </div>
+
+    <div class="col-xs-6 ">
+        <h3> Condition:</h3>
+
+    	<p>{{response.data.0.fields.condition.fields.name}}</p>
+    </div>
+
+    <div class="col-xs-6 ">
+        <h3> Seller:</h3>
+
+    	<p>{{response.data.0.fields.seller.fields.first_name}} {{response.data.0.fields.seller.fields.last_name}}</p>
+    </div>
+
+    <div class="col-xs-6 ">
+        <h3> Seller Rating:</h3>
+
+    	<p>{{response.data.0.fields.seller.fields.seller_rating}}</p>
+    </div>
 </body>
 {% endblock %}

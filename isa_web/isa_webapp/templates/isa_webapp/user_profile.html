@@ -6,7 +6,49 @@
           <h2>User Profile</h2>
     </div>
     <div>
-    	<h3>{{data}}</h3>
+        <h1> Welcome, {{fname}} {{lname}}</h1>
+        <p> Buyer Rating: {{brating}}
+        <p> Seller Rating: {{srating}}
+        <p> Recent Purchases: </p>
+        {% if purchasenum > 0 %}
+            <div class="row">
+                <ul class="list-group">
+                {% for i in purchase %}
+                    <div class="col-xs-6 ">
+                        <li class="list-group-item">
+                            <div class="row">
+                                <p> <b> Name:</b> {{ i.fields.product_snapshot.fields.name }} </p>
+                                <p> <b> Description:</b> {{ i.fields.product_snapshot.fields.description }} </p>
+                                <a class="btn btn-default" href="{% url 'product' i.pk %}">Detail</a>
+                            </div>
+                        </li>
+                    </div>
+                {% endfor %}
+                </ul>
+            </div>
+            {% else %}
+                <p>  No recent purchase items! </p>
+        {% endif %}
+        <p> Recent Sold: </p>
+        {% if soldnum > 0 %}
+        <div class="row">
+        <ul class="list-group">
+            {% for i in sold %}
+                <div class="col-xs-6">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <p> <b> Name:</b> {{ i.fields.product_snapshot.fields.name }} </p>
+                            <p> <b> Description:</b> {{ i.fields.product_snapshot.fields.description }} </p>
+                            <a class="btn btn-default" href="{% url 'product' i.pk %}">Detail</a>
+                        </div>
+                    </li>
+                </div>
+            {% endfor %}
+        </ul>
+        </div>
+            {% else %}
+                <p>  No recent sold items! </p>
+        {% endif %}
     </div>
 
 </body>
