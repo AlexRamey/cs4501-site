@@ -38,10 +38,7 @@ def productdetails(request, id):
     context = getInitialContext(request)
 
     resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/productdetails/' +id+ '/')
-
-    # TODO: Handle if resp["response"] == "failure"
-
-    context['response'] = resp # TODO: this needs to be more granular
+    context['response'] = resp
 
     return render(request, 'isa_webapp/product_details.html', context)
 
