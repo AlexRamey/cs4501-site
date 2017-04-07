@@ -43,9 +43,6 @@ def productdetails(request, id):
 
     return render(request, 'isa_webapp/product_details.html', context)
 
-# TODO: userprofile should show a lot more info such as a user's listing (products where they are the seller)
-            # this info is already provided by the experience layer API so get it out of the resp object 
-# TODO: userprofile should accept a user id as a parameter
 @login_required
 def userprofile(request):
     context = getInitialContext(request)
@@ -55,13 +52,14 @@ def userprofile(request):
     if userid == None:
         return render()
 
-    # resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/'+userid+'/')
     resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/' + userid +'/')
 
     if resp["response"] == "success":
         if len(resp['data']) == 1:
             context["fname"] = resp['data'][0]['fields']['first_name']
             context["lname"] = resp['data'][0]['fields']['last_name']
+            context["email"] = resp['data'][0]['fields']['email']
+            context["phone"] = resp['data'][0]['fields']['phone_number']
             context["brating"] = resp['data'][0]['fields']['buyer_rating']
             context["srating"] = resp['data'][0]['fields']['seller_rating']
 
@@ -69,10 +67,10 @@ def userprofile(request):
             context["purchasenum"] = len(resp['data'][0]['purchases'])
             context["sold"] = resp['data'][0]['sold']
             context["soldnum"] = len(resp['data'][0]['sold'])
+            context["selling"] = resp['data'][0]['currently_selling']
+            context["selling_num"] = len(resp['data'][0]['currently_selling'])
     else:
         context["error"] = resp["error"]["msg"]
-    # TODO: Handle if resp["response"] == "failure"
-    # TODO: Put information found in response in context so the template can access it  
 
     return render(request, 'isa_webapp/user_profile.html', context)
 

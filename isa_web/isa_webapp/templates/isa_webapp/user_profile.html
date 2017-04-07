@@ -2,14 +2,16 @@
 {% block title %}{% endblock %}
 {% block body_block %}
 <body>
-	<div class="col-sm-9 col-sm-offset-5 main">
-          <h2>User Profile</h2>
+	<div style="text-align:center;">
+          <h2>User Profile for '{{fname}} {{lname}}'</h2>
     </div>
     <div>
-        <h1> Welcome, {{fname}} {{lname}}</h1>
-        <p> Buyer Rating: {{brating}}
-        <p> Seller Rating: {{srating}}
-        <p> Recent Purchases: </p>
+        <h3> User Information </h3>
+        <b>Email Address:</b> {{email}} <br/>
+        <b>Phone Number:</b> {{phone}} <br/>
+        <b>Buyer Rating:</b> {{brating}} <br/>
+        <b>Seller Rating:</b> {{srating}} <br/>
+        <h3> Recent Purchases: </h3>
         {% if purchasenum > 0 %}
             <div class="row">
                 <ul class="list-group">
@@ -19,17 +21,17 @@
                             <div class="row">
                                 <p> <b> Name:</b> {{ i.fields.product_snapshot.fields.name }} </p>
                                 <p> <b> Description:</b> {{ i.fields.product_snapshot.fields.description }} </p>
-                                <a class="btn btn-default" href="{% url 'product' i.pk %}">Detail</a>
+                                <a class="btn btn-primary" href="{% url 'product' i.pk %}">Detail</a>
                             </div>
                         </li>
                     </div>
                 {% endfor %}
                 </ul>
             </div>
-            {% else %}
-                <p>  No recent purchase items! </p>
+        {% else %}
+            <p>  No recent purchase items! </p>
         {% endif %}
-        <p> Recent Sold: </p>
+        <h3> Recent Sold: </h3>
         {% if soldnum > 0 %}
         <div class="row">
         <ul class="list-group">
@@ -39,15 +41,35 @@
                         <div class="row">
                             <p> <b> Name:</b> {{ i.fields.product_snapshot.fields.name }} </p>
                             <p> <b> Description:</b> {{ i.fields.product_snapshot.fields.description }} </p>
-                            <a class="btn btn-default" href="{% url 'product' i.pk %}">Detail</a>
+                            <a class="btn btn-primary" href="{% url 'product' i.pk %}">Detail</a>
                         </div>
                     </li>
                 </div>
             {% endfor %}
         </ul>
         </div>
-            {% else %}
-                <p>  No recent sold items! </p>
+        {% else %}
+            <p>  No recent sold items! </p>
+        {% endif %}
+        <h3>Currently Selling:</h3>
+        {% if selling_num > 0 %}
+        <div class="row">
+        <ul class="list-group">
+            {% for i in selling %}
+                <div class="col-xs-6">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <p> <b> Name:</b> {{ i.fields.name }} </p>
+                            <p> <b> Description:</b> {{ i.fields.description }} </p>
+                            <a class="btn btn-primary" href="{% url 'product' i.pk %}">Detail</a>
+                        </div>
+                    </li>
+                </div>
+            {% endfor %}
+        </ul>
+        </div>
+        {% else %}
+            <p>  No recent sold items! </p>
         {% endif %}
     </div>
 
