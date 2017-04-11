@@ -3,7 +3,8 @@ from django.http import JsonResponse, HttpResponse
 from urllib.error import URLError, HTTPError
 import urllib.request
 import json
-
+from kafka import KafkaProducer
+from elasticsearch import Elasticsearch
 
 # Create your views here.
 def index(request):
@@ -13,21 +14,22 @@ def index(request):
 def search_results(request):
     # Get all the products
     resp = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products')
-
+    search_query = request.POST['search_query']
+    es = Elasticsearch(['es'])
+    # search_results = es.search(index='listing_index', body={'query': {'query_string': {'query' : search_query}}, 'size': 2})
     # Verify that no error occurred here
     if resp["response"] == "failure":
-        return getJsonResponseForLayerOneError(resp)
+      return getJsonResponseForLayerOneError(resp)
 
-    results = resp["data"]
-
+    results = resp["data"]#search_results ##
     # Hydrate the associated seller info, category info, and condition info
     result = hydrateAssociatedModels(results, [["users/", "seller"], ["categories/", "category"], ["conditions/", "condition"]])
     
     # Return the appropriate JsonRespose (either error or success)
-    if result != None:
-        return result
-    else:
-        return getJsonResponseForResults(results)
+    # if result != None:
+    #     return result
+    # else:
+    return getJsonResponseForResults(results)
 
 def hot_items(request):
     # Get all the products
@@ -188,7 +190,12 @@ def createlisting(request):
         return getJsonResponseForResults(results)
 
     else: # POST
+        producer = KafkaProducer(bootstrap_servers='kafka:9092')
         listingResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
+        if listingResponse['response'] == 'success':
+            new_listing = {'id' : listingResponse['data'][0]['pk'], 'name' : listingResponse['data'][0]['fields']['name'], 'description' : listingResponse['data'][0]['fields']['description']}
+            producer.send('new-listings-topic', json.dumps(new_listing).encode('utf-8'))
+            print(producer)
         return JsonResponse(listingResponse)
 
 # HELPER METHODS

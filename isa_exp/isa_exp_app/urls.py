@@ -3,7 +3,7 @@ from .views import index, search_results, hot_items, new_posts, product_details,
 
 urlpatterns = [
     url(r'^$', index, name='index'),
-    url(r'^searchresults/$', search_results),
+    url(r'^searchresults/$', search_results, name='searchresults'),
     url(r'^hotitems/$', hot_items),
     url(r'^newposts/$', new_posts),
     url(r'^productdetails/(?P<product_id>\d+)/$', product_details),

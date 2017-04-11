@@ -1,8 +1,9 @@
-from .forms import CreateAccountForm, LoginForm, CreateListingForm
+from .forms import CreateAccountForm, LoginForm, CreateListingForm, SearchForm
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django import forms
 from urllib.error import URLError, HTTPError
 import urllib.request
 import urllib
@@ -25,14 +26,32 @@ def base(request):
 
 def searchproduct(request):
     context = getInitialContext(request)
-
-    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/searchresults')
-
+    resp = None
+    if request.method == 'GET':
+        form = SearchForm()
+        return render(request, 'isa_webapp/search_product.html', {'form' : form, 'search_results' : resp})
+    search_query = request.POST['search_query']
+    search_query_dict = {'search_query' : search_query}
+    search_query_post = urllib.parse.urlencode(search_query_dict).encode('utf-8')
+    #resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/searchresults/', method='POST', data=search_query_post)
+    req = urllib.request.Request('http://exp-api:8000/isa_experience/api/v1/searchresults/', method='POST', data=search_query_post)
+    try:
+        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
+    except HTTPError as e:
+        errorMessage = "HTTP Error: " + str(e.code)
+        return JsonResponse({"response" : "failure", "error" : {"msg" : errorMessage}})
+    except URLError as e:
+        return JsonResponse({"response" : "failure", "error" : {"msg" : str(e.args)}})
+    resp = json.loads(resp_json)
     # TODO: Handle if resp["response"] == "failure"
 
     context['response'] = resp # TODO: this needs to be more granular
+    return render(request, 'isa_webapp/search_results.html', {'search_results' : resp['data']})
 
-    return render(request, 'isa_webapp/search_product.html', context)
+# def searchresults(request):
+#     #if request.POST.get('search_query'):
+#     resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/searchresults')
+#     return render(request, 'isa_webapp/search_results.html', {'search_results' : resp})
 
 def productdetails(request, id):
     context = getInitialContext(request)
@@ -130,6 +149,7 @@ def logout(request):
 def createlisting(request):
     context = getInitialContext(request)
     resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting')
+    print(resp)
 
     if resp["response"] == "failure":
         return HttpResponseRedirect(reverse('base'))

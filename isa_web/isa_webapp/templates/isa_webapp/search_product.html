@@ -1,17 +1,13 @@
 {% extends "isa_webapp/template.html" %}
 {% block title %}Search Product{% endblock %}
 {% block body_block %}
-<body>
-	<div style="text-align: center;">
-          <h2>Search Product</h2>
-    </div>
+<form action="{% url 'search' %}", method="post">
+    {% csrf_token %}
     <div>
-    	{% for i in response.data %}
-
-            {{ i.fields.name }} </br>
-
-        {% endfor %}
+        <input name="{{ form.search_query.name }}" type="text" placeholder="Enter Search Term" style="display: inline-block;">
+        <span class="input-group-btn">
+             <button class="btn btn-default" type="button submit" style="display: inline-block;"><i class="glyphicon glyphicon-search" ></i></button>
+        </span>
     </div>
-
-</body>
+</form>
 {% endblock %}
