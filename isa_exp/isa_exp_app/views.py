@@ -15,14 +15,17 @@ def search_results(request):
     search_query = request.POST['search_query']
     es = Elasticsearch(['es'])
 
-    # THIS MAY RAISE AN INDEX_NOT_FOUND EXCEPTION
-    search_results = es.search(index='listing_index', body={'query': {'query_string': {'query' : search_query}}, 'size': 10})
-    
+    try:
+        search_results = es.search(index='listing_index', body={'query': {'query_string': {'query' : search_query}}, 'size': 10})
+    except:
+        # This will occur if a search is executed before the listing_index has been created
+        return JsonResponse({"response" : "failure", "error" : {"msg" : "Search index not yet created (create a new listing for this to happen)."}})
+
     returned_items = search_results['hits']['hits']
     hydrated_results = []
     for item in returned_items:
         resp = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/' + str(item['_source']['id']))
-        print(resp)
+
         # Verify that no error occurred here
         if resp["response"] == "success":
             # Hydrate the associated seller info, category info, and condition info
@@ -231,7 +234,6 @@ product["fields"][key] now refers to associated model's fields
 def hydrateAssociatedModelInfo(products, endpoint, key):
     for prod in products:
         resp = getJsonReponseObject("http://models-api:8000/isa_models/api/v1/" + endpoint + str(prod["fields"][key]))
-        print(resp)
         if resp["response"] == "success":
             prod["fields"][key + "_id"] = prod["fields"][key]
             prod["fields"][key] = resp["data"][0]
