@@ -1,7 +1,11 @@
 ramey/
 .DS_Store
 isa_site/.idea/
-
+isa_site/isa_models/.idea/
+isa_exp/.idea/
+isa_exp/isa_exp_app/.idea/
+isa_web/.idea/
+isa_web/isa_webapp/.idea
 # Migrations
 isa_site/isa_models/migrations/
 
