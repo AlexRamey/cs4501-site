@@ -12,6 +12,10 @@ import datetime
 
 def users(request):
     if request.method == "POST":
+        # plain_text_email = request.POST["email"]
+        users = User.objects.filter(email=request.POST["email"])
+        if len(users) > 0:
+            return JsonResponse({'response' : 'failure', 'error' : { 'msg' : 'Someone with that email already exists.'}})
         plain_text_pswd = request.POST["password"]
         if len(plain_text_pswd) < 5:
             return JsonResponse({'response' : 'failure', 'error' : { 'msg' : 'Password too short! Must be at least 5 characters long.'}})
