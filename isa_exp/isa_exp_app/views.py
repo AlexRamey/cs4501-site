@@ -16,14 +16,16 @@ def search_results(request):
     resp = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products')
     search_query = request.POST['search_query']
     es = Elasticsearch(['es'])
-    # search_results = es.search(index='listing_index', body={'query': {'query_string': {'query' : search_query}}, 'size': 2})
+    search_results = es.search(index='listing_index', body={'query': {'query_string': {'query' : search_query}}, 'size': 2})
+    print("HELLOOO")
+    print(search_results)
     # Verify that no error occurred here
     if resp["response"] == "failure":
       return getJsonResponseForLayerOneError(resp)
 
-    results = resp["data"]#search_results ##
+    results = search_results#resp["data"]#search_results ##
     # Hydrate the associated seller info, category info, and condition info
-    result = hydrateAssociatedModels(results, [["users/", "seller"], ["categories/", "category"], ["conditions/", "condition"]])
+    #result = hydrateAssociatedModels(results, [["users/", "seller"], ["categories/", "category"], ["conditions/", "condition"]])
     
     # Return the appropriate JsonRespose (either error or success)
     # if result != None:
@@ -192,6 +194,7 @@ def createlisting(request):
     else: # POST
         producer = KafkaProducer(bootstrap_servers='kafka:9092')
         listingResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
+        print(listingResponse)
         if listingResponse['response'] == 'success':
             new_listing = {'id' : listingResponse['data'][0]['pk'], 'name' : listingResponse['data'][0]['fields']['name'], 'description' : listingResponse['data'][0]['fields']['description']}
             producer.send('new-listings-topic', json.dumps(new_listing).encode('utf-8'))

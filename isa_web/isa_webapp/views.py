@@ -46,7 +46,10 @@ def searchproduct(request):
     # TODO: Handle if resp["response"] == "failure"
 
     context['response'] = resp # TODO: this needs to be more granular
-    return render(request, 'isa_webapp/search_results.html', {'search_results' : resp['data']})
+    search_results = []
+    for search_result in resp['data']['hits']['hits']:
+        search_results.append(search_result['_source'])
+    return render(request, 'isa_webapp/search_results.html', {'search_results' : search_results})
 
 # def searchresults(request):
 #     #if request.POST.get('search_query'):
