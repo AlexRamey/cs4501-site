@@ -10,4 +10,15 @@
         </span>
     </div>
 </form>
+
+{% if search_results %}
+  <h2>Results</h2>
+    {% for listing in search_results %}
+    <h3>{{ listing.fields.name }}</h3>
+    <h4>{{ listing.fields.description }}</h4>
+    {% endfor %}
+{% else %}
+  <h3>No results found</h3>
+{% endif %}
+
 {% endblock %}

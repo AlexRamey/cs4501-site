@@ -12,26 +12,27 @@ def index(request):
     return render(request, 'isa_exp_app/index.html', {'helloMsg' : helloMsg})
 
 def search_results(request):
-    # Get all the products
-    resp = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products')
     search_query = request.POST['search_query']
     es = Elasticsearch(['es'])
-    search_results = es.search(index='listing_index', body={'query': {'query_string': {'query' : search_query}}, 'size': 2})
-    print("HELLOOO")
-    print(search_results)
-    # Verify that no error occurred here
-    if resp["response"] == "failure":
-      return getJsonResponseForLayerOneError(resp)
 
-    results = search_results#resp["data"]#search_results ##
-    # Hydrate the associated seller info, category info, and condition info
-    #result = hydrateAssociatedModels(results, [["users/", "seller"], ["categories/", "category"], ["conditions/", "condition"]])
+    # THIS MAY RAISE AN INDEX_NOT_FOUND EXCEPTION
+    search_results = es.search(index='listing_index', body={'query': {'query_string': {'query' : search_query}}, 'size': 10})
     
-    # Return the appropriate JsonRespose (either error or success)
-    # if result != None:
-    #     return result
-    # else:
-    return getJsonResponseForResults(results)
+    returned_items = search_results['hits']['hits']
+    hydrated_results = []
+    for item in returned_items:
+        resp = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/' + str(item['_source']['id']))
+        print(resp)
+        # Verify that no error occurred here
+        if resp["response"] == "success":
+            # Hydrate the associated seller info, category info, and condition info
+            # And append the hyrdated_result to our hyrdrated results list
+            result = resp["data"]
+            error = hydrateAssociatedModels(result, [["users/", "seller"], ["categories/", "category"], ["conditions/", "condition"]])
+            if error == None:
+                hydrated_results.append(result[0])
+
+    return getJsonResponseForResults(hydrated_results)
 
 def hot_items(request):
     # Get all the products
@@ -194,11 +195,9 @@ def createlisting(request):
     else: # POST
         producer = KafkaProducer(bootstrap_servers='kafka:9092')
         listingResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
-        print(listingResponse)
         if listingResponse['response'] == 'success':
             new_listing = {'id' : listingResponse['data'][0]['pk'], 'name' : listingResponse['data'][0]['fields']['name'], 'description' : listingResponse['data'][0]['fields']['description']}
             producer.send('new-listings-topic', json.dumps(new_listing).encode('utf-8'))
-            print(producer)
         return JsonResponse(listingResponse)
 
 # HELPER METHODS
@@ -232,6 +231,7 @@ product["fields"][key] now refers to associated model's fields
 def hydrateAssociatedModelInfo(products, endpoint, key):
     for prod in products:
         resp = getJsonReponseObject("http://models-api:8000/isa_models/api/v1/" + endpoint + str(prod["fields"][key]))
+        print(resp)
         if resp["response"] == "success":
             prod["fields"][key + "_id"] = prod["fields"][key]
             prod["fields"][key] = resp["data"][0]

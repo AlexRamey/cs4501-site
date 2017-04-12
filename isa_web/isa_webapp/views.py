@@ -24,37 +24,31 @@ def base(request):
 
     return render(request, 'isa_webapp/base.html', context)
 
-def searchproduct(request):
+def search(request):
     context = getInitialContext(request)
-    resp = None
+    context['search_results'] = []
+
     if request.method == 'GET':
         form = SearchForm()
-        return render(request, 'isa_webapp/search_product.html', {'form' : form, 'search_results' : resp})
-    search_query = request.POST['search_query']
-    search_query_dict = {'search_query' : search_query}
-    search_query_post = urllib.parse.urlencode(search_query_dict).encode('utf-8')
-    #resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/searchresults/', method='POST', data=search_query_post)
-    req = urllib.request.Request('http://exp-api:8000/isa_experience/api/v1/searchresults/', method='POST', data=search_query_post)
-    try:
-        resp_json = urllib.request.urlopen(req).read().decode('utf-8')
-    except HTTPError as e:
-        errorMessage = "HTTP Error: " + str(e.code)
-        return JsonResponse({"response" : "failure", "error" : {"msg" : errorMessage}})
-    except URLError as e:
-        return JsonResponse({"response" : "failure", "error" : {"msg" : str(e.args)}})
-    resp = json.loads(resp_json)
-    # TODO: Handle if resp["response"] == "failure"
 
-    context['response'] = resp # TODO: this needs to be more granular
-    search_results = []
-    for search_result in resp['data']['hits']['hits']:
-        search_results.append(search_result['_source'])
-    return render(request, 'isa_webapp/search_results.html', {'search_results' : search_results})
+    else: # POST
+        form = SearchForm(request.POST)
 
-# def searchresults(request):
-#     #if request.POST.get('search_query'):
-#     resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/searchresults')
-#     return render(request, 'isa_webapp/search_results.html', {'search_results' : resp})
+        if form.is_valid():
+            search_query = form.cleaned_data['search_query']
+            search_query_dict = {'search_query' : search_query}
+            search_query_post = urllib.parse.urlencode(search_query_dict).encode('utf-8')
+            resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/searchresults/', method='POST', data=search_query_post)
+            
+            if resp["response"] == "success":
+                context['search_results'] = resp["data"]
+            else:
+                context["error"] = resp["error"]["msg"]
+        else:
+            context["error"] = "Invalid Search Query."
+
+    context["form"] = form
+    return render(request, 'isa_webapp/search.html', context)
 
 def productdetails(request, id):
     context = getInitialContext(request)
@@ -152,7 +146,6 @@ def logout(request):
 def createlisting(request):
     context = getInitialContext(request)
     resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting')
-    print(resp)
 
     if resp["response"] == "failure":
         return HttpResponseRedirect(reverse('base'))

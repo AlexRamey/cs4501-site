@@ -4,8 +4,7 @@ from isa_webapp import views
 
 urlpatterns = [
     url(r'^$', views.base, name='base'),
-    url(r'^search/$',views.searchproduct, name='search'),
-    #url(r'^searchresults/$',views.searchresults, name='search_results'),
+    url(r'^search/$',views.search, name='search'),
     url(r'^product/(?P<id>[0-9]+)/$',views.productdetails, name='product'),
     url(r'^profile/$',views.userprofile, name='profile'),
     url(r'^createaccount/$', views.createaccount, name='createaccount'),
