@@ -30,5 +30,6 @@ class CreateListingForm(forms.Form):
         self.fields["condition"] = forms.ChoiceField(conditions)
         self.fields["seller"] = forms.CharField(widget=forms.HiddenInput, initial=auth)
 
+
 class SearchForm(forms.Form):
     search_query = forms.CharField(max_length=100)

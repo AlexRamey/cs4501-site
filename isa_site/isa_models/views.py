@@ -69,7 +69,6 @@ def products(request):
         else:
             mutable_post_params = request.POST.copy()
             mutable_post_params["seller"] = str(authenticators[0].user.id)
-            print(mutable_post_params)
             resp = create_or_update_model_post_response(ProductForm(mutable_post_params))
             return resp
             
@@ -82,8 +81,25 @@ def product(request, product_id):
     result = entity_or_not_found_response(Product.objects, product_id)
     if not isinstance(result, Product):
         return result
+    if request.method == "POST":
+        authenticator = request.POST["seller"]
+        today = datetime.date.today()
+        one_week_ago = today - datetime.timedelta(weeks=1)
+        authenticators = Authenticator.objects.filter(authenticator=authenticator).filter(
+            date_created__range=[one_week_ago, today])
+        if (len(authenticators) == 0):
+            return JsonResponse({'response': 'failure', 'error': {'msg': 'Invalid credentials!'}})
+        elif authenticators[0].user.id != result.seller_id:
+            return JsonResponse({'response': 'failure', 'error': {'msg': 'Not allowed to edit someone else product!'}})
+        else:
+            mutable_post_params = request.POST.copy()
+            mutable_post_params["seller"] = str(authenticators[0].user.id)
+            return entity_response(request, result, ProductForm(mutable_post_params, instance=result))
 
-    return entity_response(request, result, ProductForm(request.POST, instance=result))
+    elif request.method == "GET":
+        return entity_response(request, result, ProductForm(request.POST, instance=result))
+    else:
+        return HttpResponse("Invalid HTTP Method (must be GET or POST).", status=404)
 
 def orders(request):
     return collection_response(request, OrderForm(request.POST), Order.objects)

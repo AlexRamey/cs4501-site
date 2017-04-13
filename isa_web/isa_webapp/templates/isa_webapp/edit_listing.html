@@ -1,0 +1,10 @@
+{% extends "isa_webapp/template.html" %}
+{% block title %}Edit Listing{% endblock %}
+{% block body_block %}
+<div style="text-align:center;">
+    <h1>Edit Listing</h1>
+</div>
+{{ error }}
+{%  include "./_productform.html" with path=path buttontext="Edit Listing" %}
+
+{% endblock %}

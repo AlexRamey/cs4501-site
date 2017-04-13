@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
     url(r'^createlisting/$', views.createlisting, name='createlisting'),
+    url(r'^editlisting/(?P<id>[0-9]+)/$', views.editlisting, name='editlisting'),
   ]

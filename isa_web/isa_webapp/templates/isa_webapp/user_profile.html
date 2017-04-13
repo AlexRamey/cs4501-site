@@ -62,6 +62,7 @@
                             <p> <b> Name:</b> {{ i.fields.name }} </p>
                             <p> <b> Description:</b> {{ i.fields.description }} </p>
                             <a class="btn btn-primary" href="{% url 'product' i.pk %}">Detail</a>
+                            <a class="btn btn-primary" href="{% url 'editlisting' i.pk %}">Edit</a>
                         </div>
                     </li>
                 </div>

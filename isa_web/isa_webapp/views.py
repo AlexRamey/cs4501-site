@@ -65,7 +65,7 @@ def userprofile(request):
     userid = context["auth_id"]
 
     if userid == None:
-        return render()
+        return HttpResponseRedirect(reverse("base"))
 
     resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/userprofile/' + userid +'/')
 
@@ -172,6 +172,57 @@ def createlisting(request):
 
     context["form"] = form
     return render(request, 'isa_webapp/create_listing.html', context)
+
+
+def editlisting(request, id):
+    # Make sure we're allowed to edit this thing
+    if request.COOKIES.get('auth') == None:
+        return HttpResponseRedirect(reverse('base'))
+
+    context = getInitialContext(request)
+
+    # get api for product details
+    prodResp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/productdetails/' + id + '/')
+    if prodResp["response"] == "failure":
+        return HttpResponseRedirect(reverse('base'))
+    elif str(prodResp["data"][0]["fields"]["seller_id"]) != context["auth_id"]:
+        print(str(prodResp["data"][0]["fields"]["seller_id"]))
+        print(context["auth_id"])
+        print("puppy")
+        # Not allowed to edit somone else's product
+        return HttpResponseRedirect(reverse('base'))
+
+    # get api for create listings
+    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/createlisting')
+    if resp["response"] == "failure":
+        return HttpResponseRedirect(reverse('base'))
+    categories = resp["data"]["categories"]
+    categories = map((lambda category: (category["pk"], category["fields"]["name"])), categories)
+    conditions = resp["data"]["conditions"]
+    conditions = map((lambda condition: (condition["pk"], condition["fields"]["name"])), conditions)
+
+    #something a little slimy . . .
+    prodResp["data"][0]["fields"]["category"] = prodResp["data"][0]["fields"]["category_id"]
+    prodResp["data"][0]["fields"]["condition"] = prodResp["data"][0]["fields"]["condition_id"]
+    prodResp["data"][0]["fields"]["seller"] = context["auth"]
+
+    # prefill the form
+    if request.method == "POST":
+        form = CreateListingForm(categories, conditions, context["auth"], request.POST)
+        print(form.errors)
+        if form.is_valid():
+            resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/editlisting/' + id + '/', "POST",
+                                        urllib.parse.urlencode(form.cleaned_data).encode('utf-8'))
+            if resp["response"] == "success":
+                return HttpResponseRedirect(reverse('product', kwargs={'id':id}))
+            else:
+                context["error"] = resp["error"]["msg"]
+    else:
+        form = CreateListingForm(categories, conditions, context["auth"], prodResp["data"][0]["fields"])
+
+    context["form"] = form
+    context["path"] = "/isa_web/editlisting/" + id + "/"
+    return render(request, 'isa_webapp/edit_listing.html', context)
 
 # HELPER METHODS
 def getJsonReponseObject(url, method="GET", data=None):

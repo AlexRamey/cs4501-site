@@ -193,11 +193,19 @@ def createlisting(request):
         return getJsonResponseForResults(results)
 
     else: # POST
+        print(request.POST)
         producer = KafkaProducer(bootstrap_servers='kafka:9092')
         listingResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
         if listingResponse['response'] == 'success':
             new_listing = {'id' : listingResponse['data'][0]['pk'], 'name' : listingResponse['data'][0]['fields']['name'], 'description' : listingResponse['data'][0]['fields']['description']}
             producer.send('new-listings-topic', json.dumps(new_listing).encode('utf-8'))
+        return JsonResponse(listingResponse)
+
+def editlisting(request, id):
+    if request.method == "POST":
+        print(request.POST)
+        listingResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/' + id + '/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
+        print("hurray")
         return JsonResponse(listingResponse)
 
 # HELPER METHODS
