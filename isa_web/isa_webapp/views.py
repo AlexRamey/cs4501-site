@@ -110,6 +110,10 @@ def createaccount(request):
     return render(request, 'isa_webapp/create_account.html', context)
 
 def login(request):
+    # Redirect to home page if they are already signed in
+    if request.COOKIES.get('auth') != None:
+        return HttpResponseRedirect(reverse('base'))
+
     context = getInitialContext(request)
     context["next"] = "/isa_web/login/"
     if "next" in request.GET:
@@ -132,6 +136,7 @@ def login(request):
     context["form"] = form
     return render(request, 'isa_webapp/login.html', context)
 
+@login_required
 def logout(request):
     if request.method == "POST":
         response = HttpResponseRedirect(reverse('base'))

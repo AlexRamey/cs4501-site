@@ -1,24 +1,31 @@
 {% extends "isa_webapp/template.html" %}
 {% block title %}Search Product{% endblock %}
 {% block body_block %}
-<form action="{% url 'search' %}", method="post">
-    {% csrf_token %}
-    <div>
-        <input name="{{ form.search_query.name }}" type="text" placeholder="Enter Search Term" style="display: inline-block;">
-        <span class="input-group-btn">
-             <button class="btn btn-default" type="button submit" style="display: inline-block;"><i class="glyphicon glyphicon-search" ></i></button>
-        </span>
+<h1>Search Page</h1>
+{% include "./_searchbar.html" %}
+{% if error %}
+    {{ error }}
+{% elif search_results|length > 0 %}
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table table-striped">
+                <tr>
+                    <th>Product Name</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+                {% for listing in search_results %}
+                    <tr>
+                        <td>{{ listing.fields.name }}</td>
+                        <td>{{ listing.fields.description }}</td>
+                        <td><a href="{% url 'product' listing.pk %}">Details Page</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
-</form>
-
-{% if search_results %}
-  <h2>Results</h2>
-    {% for listing in search_results %}
-    <h3>{{ listing.fields.name }}</h3>
-    <h4>{{ listing.fields.description }}</h4>
-    {% endfor %}
 {% else %}
-  <h3>No results found</h3>
+    No results found.
 {% endif %}
 
 {% endblock %}
