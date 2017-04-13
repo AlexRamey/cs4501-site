@@ -196,7 +196,6 @@ def createlisting(request):
         return getJsonResponseForResults(results)
 
     else: # POST
-        print(request.POST)
         producer = KafkaProducer(bootstrap_servers='kafka:9092')
         listingResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
         if listingResponse['response'] == 'success':
@@ -206,9 +205,17 @@ def createlisting(request):
 
 def editlisting(request, id):
     if request.method == "POST":
-        print(request.POST)
         listingResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/products/' + id + '/', "POST", urllib.parse.urlencode(request.POST).encode('utf-8'))
-        print("hurray")
+        if listingResponse['response'] == 'success':
+            # First, remove the old Elastic Search Entry
+            es = Elasticsearch(['es'])
+            es.delete(index='listing_index', id=id, doc_type='listing', refresh=True)
+
+            # Second, add the new entry into Kafka\
+            producer = KafkaProducer(bootstrap_servers='kafka:9092')
+            new_listing = {'id' : listingResponse['data'][0]['pk'], 'name' : listingResponse['data'][0]['fields']['name'], 'description' : listingResponse['data'][0]['fields']['description']}
+            producer.send('new-listings-topic', json.dumps(new_listing).encode('utf-8'))
+
         return JsonResponse(listingResponse)
 
 # HELPER METHODS
