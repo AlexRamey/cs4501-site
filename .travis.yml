@@ -1,0 +1,12 @@
+sudo: required
+language: python
+services:
+  - docker
+python:
+  - "3.5"
+before_script:
+- mysql -u root -e "create database test_cs4501;"
+- mysql -u root -e "grant all on test_cs4501.* to 'www';"
+script:
+- docker-compose up -d
+- docker exec cs4501site_models_1 bash -c "python manage.py test"
