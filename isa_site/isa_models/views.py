@@ -98,6 +98,9 @@ def product(request, product_id):
 
     elif request.method == "GET":
         return entity_response(request, result, ProductForm(request.POST, instance=result))
+    elif request.method == "DELETE":
+        result.delete()
+        return entity_deleted_json_response(type(result).__name__)
     else:
         return HttpResponse("Invalid HTTP Method (must be GET or POST).", status=404)
 

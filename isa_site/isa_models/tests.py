@@ -245,8 +245,10 @@ class GetTestProduct(TestCase):
         Condition.objects.create(name="Test1")
         con_id = Condition.objects.get(name="Test1")
         fix_user = User.objects.get(id=1)
+        fix_user2 = User.objects.get(id=2)
         Product.objects.create(seller=num_id, name="XYZQWE DVD", description="NA", category=cat_id, price=10.0, stock=2, sold=False, condition=con_id)
         Authenticator.objects.create(user=fix_user, authenticator="vlq6IxgWn8")
+        Authenticator.objects.create(user=fix_user2, authenticator="wmr7JyhXo9")
 
     def test_success_response(self):
         response = self.client.get(reverse('products')).json()
@@ -263,12 +265,13 @@ class GetTestProduct(TestCase):
         self.assertTrue(len(response['data']) == 1)
 
     def test_success_update_response(self):
-    	response = self.client.post(reverse('product', kwargs={'product_id': 1}), {'seller' : 2, 'name' : "Food", 'description' : "N/A", 'category' : 1, 'price' : 250.0, 'stock' : 1, 'sold' : False, 'condition' : 2})
-    	response = response.json()
-    	self.assertEquals(response['response'], 'success')
-    	self.assertTrue(isinstance(response['data'], list))
-    	self.assertEquals(response['data'][0]['fields']['name'], "Food")
-    	self.assertTrue(len(response['data']) == 1)
+        auth_user2 = "wmr7JyhXo9"
+        response = self.client.post(reverse('product', kwargs={'product_id': 1}), {'seller' : auth_user2, 'name' : "Food", 'description' : "N/A", 'category' : 1, 'price' : 250.0, 'stock' : 1, 'sold' : False, 'condition' : 2})
+        response = response.json()
+        self.assertEquals(response['response'], 'success')
+        self.assertTrue(isinstance(response['data'], list))
+        self.assertEquals(response['data'][0]['fields']['name'], "Food")
+        self.assertTrue(len(response['data']) == 1)
 
     def test_success_create_response(self):
     	auth_user1 = "vlq6IxgWn8"
