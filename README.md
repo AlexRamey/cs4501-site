@@ -1,4 +1,4 @@
-# cs4501-site
+# cs4501-site [![Build Status](https://travis-ci.com/AlexRamey/cs4501-site.svg?token=Xysn3BYGhBapWoJ4eN7R&branch=master)](https://travis-ci.com/AlexRamey/cs4501-site)
 cs4501 project
 
 # Models API:
