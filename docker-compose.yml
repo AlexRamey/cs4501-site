@@ -30,6 +30,16 @@ web:
       - ./isa_web:/app
    command: "mod_wsgi-express start-server --log-to-terminal --reload-on-changes /app/isa_web/wsgi.py"
 
+web2:
+   image: tp33/django
+   links:
+      - exp:exp-api
+   ports:
+      - "8004:8000"
+   volumes:
+      - ./isa_web:/app
+   command: "mod_wsgi-express start-server --log-to-terminal --reload-on-changes /app/isa_web/wsgi.py"
+
 kafka:
    image: spotify/kafka
    container_name: kafka

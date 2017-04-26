@@ -1,0 +1,13 @@
+To see the load-balancer in action:
+
+Step 1: Run docker-compose up -d to start up the web app (there are now 2 web containers)
+Step 2: cd into the cs4501-site/haproxy directory and run "docker build -t abr8xq-haproxy ."
+            This will build the haproxy image using our haproxy.cfg file
+Step 3: Run "docker run -p 8005:80 --link cs4501site_web_1:web1 --link cs4501site_web2_1:web2 -d abr8xq-haproxy "
+            This will start up the haproxy container (and create links to the two web containers)
+Step 4: Open the browser and go to 0.0.0.0:8005/isa_web (haproxy will route you to one of the web containers)
+
+To see papertrail logs from the load balancer showing the round robin strategy:
+https://papertrailapp.com/events
+Username: abr8xq@virginia.edu
+Password: isaproj6pswd
