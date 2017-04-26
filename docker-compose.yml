@@ -63,3 +63,13 @@ batch:
    volumes:
       - .:/app
    command: bash -c "python search_indexer.py"
+
+haproxy:
+    image: abr8xq/haproxy
+    container_name: haproxy
+    ports:
+      - "8005:80"
+    links:
+      - web:web1
+      - web2:web2
+
