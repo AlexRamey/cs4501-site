@@ -21,7 +21,7 @@ exp:
     command: bash -c "mod_wsgi-express start-server --working-directory /app --log-to-terminal --reload-on-changes /app/isa_exp/wsgi.py"
 
 web:
-   image: tp33/django
+   image: abr8xq/phantomjs
    links:
       - exp:exp-api
    ports:
@@ -31,7 +31,7 @@ web:
    command: "mod_wsgi-express start-server --log-to-terminal --reload-on-changes /app/isa_web/wsgi.py"
 
 web2:
-   image: tp33/django
+   image: abr8xq/phantomjs
    links:
       - exp:exp-api
    ports:

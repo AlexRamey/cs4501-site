@@ -11,3 +11,4 @@ before_script:
 script:
 - docker-compose up -d
 - docker exec cs4501site_models_1 bash -c "python manage.py test"
+- docker exec cs4501site_web_1 bash -c "python manage.py test"
