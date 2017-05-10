@@ -41,3 +41,41 @@ class AccountTestCase(unittest.TestCase):
         submit.click()
 
         assert 'Welcome' in driver.page_source
+
+    def test_create_listing(self):
+        driver = self.driver
+        driver.get("http://0.0.0.0:8000/isa_web/createlisting")
+
+        name = driver.find_element_by_id('id_name')
+        description = driver.find_element_by_id('id_description')
+        category = driver.find_element_by_id('id_category')
+        condition = driver.find_element_by_id('id_condition')
+        price = driver.find_element_by_id('id_price')
+        stock = driver.find_element_by_id('id_stock')
+        submit = driver.find_element_by_id('submit_button')
+
+        name.send_keys('New Shoes')
+        description.send_keys('Air Jordan 11')
+        category.SelectByValue('1')
+        condition.SelectByValue('5')
+        price.send_keys('100')
+        stock.send_keys('1')
+
+        submit.click()
+
+        assert 'New Shoes' in driver.page_source
+
+    def test_search(self):
+        driver = self.driver
+        driver.get("http://0.0.0.0:8000/isa_web/search")
+
+        search = driver.find_element_by_name('search_query')
+        submit = driver.find_element_by_id('search_button')
+
+        search.send_keys('new')
+
+        submit.click()
+
+        assert 'New Shoes' in driver.page_source
+
+
