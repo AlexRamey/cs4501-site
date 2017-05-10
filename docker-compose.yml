@@ -64,6 +64,16 @@ batch:
       - .:/app
    command: bash -c "python search_indexer.py"
 
+recommendations:
+   image: tp33/django
+   container_name: recommendations
+   links:
+      - kafka:kafka
+      - es:es
+   volumes:
+      - .:/app
+   command: bash -c "python recommendations.py"
+
 haproxy:
     image: abr8xq/haproxy
     container_name: haproxy

@@ -77,6 +77,10 @@ def products(request):
     else:
         return HttpResponse("Invalid HTTP Method (must be GET or POST).", status=404)
 
+
+# IN PRODUCT, NEED TO RETURN JSON RESPONSE THAT WILL BE RUN IN RECOMMMENDATIONS.PY
+# JSON WITH TWO FIELDS, user_id and recommended_products (SEE recommendations.py)
+
 def product(request, product_id):
     result = entity_or_not_found_response(Product.objects, product_id)
     if not isinstance(result, Product):
