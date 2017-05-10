@@ -14,8 +14,8 @@ def convert_list_to_tuple(input_tuple):
 
 sc = SparkContext("spark://spark-master:7077", "Recommendations")
 
-#data = sc.textFile("/tmp/data/access.log", 2)     # each worker loads a piece of the data file
-data = sc.textFile("/tmp/data/access_log_test.txt", 2)   
+data = sc.textFile("/tmp/data/access.log", 2)     # each worker loads a piece of the data file
+  
 pairs = data.map(lambda line: tuple(line.split(",")))   # tell each worker to split each line of it's partition
 														# Due to unhashable list error, had to convert to tuple
 

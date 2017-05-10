@@ -96,6 +96,12 @@ def product_details(request, product_id):
     if resp["response"] == "failure":
         return getJsonResponseForLayerOneError(resp)
 
+    # Record this product view in Kafka if we know the user_id
+    if "user_id" in request.GET:
+        producer = KafkaProducer(bootstrap_servers='kafka:9092')
+        productView = { 'user_id' : request.GET["user_id"], 'product_id' : product_id }
+        producer.send('new-recommendations-topic', json.dumps(productView).encode('utf-8'))
+
     results = resp["data"]
 
     # Hydrate the associated seller info, category info, and condition info

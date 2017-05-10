@@ -5,16 +5,14 @@ from time import sleep
 
 consumer = None
 while consumer == None:
-	try: 
-		consumer = KafkaConsumer('new-recommendations-topic', group_id='recommendations-indexer', bootstrap_servers=['kafka:9092'])
-	except:
-		sleep(1)
+    try: 
+        consumer = KafkaConsumer('new-recommendations-topic', group_id='recommendations-indexer', bootstrap_servers=['kafka:9092'])
+    except:
+        sleep(1)
 
 es = Elasticsearch(['es'])
 
-log_file = open("data/access.log", "w")
 for message in consumer:
-	recommended_products = json.loads((message.value).decode('utf-8'))
-	log_file.write(recommended_products["user_id"] + "\t" + recommended_products["recommended_items"] + "\n")
-
-log_file.close()
+    productView = json.loads((message.value).decode('utf-8'))
+    with open("data/access.log", "a") as log_file:
+        log_file.write(productView["user_id"] + "," + productView["product_id"] + "\n")

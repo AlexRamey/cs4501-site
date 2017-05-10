@@ -53,7 +53,12 @@ def search(request):
 def productdetails(request, id):
     context = getInitialContext(request)
 
-    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/productdetails/' +id+ '/')
+    extra_arg = ""
+    user_id = context["auth_id"]
+    if user_id != None:
+        extra_arg = "?user_id=" + user_id
+
+    resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/productdetails/' +id+ '/' + extra_arg)
     context['response'] = resp
 
     return render(request, 'isa_webapp/product_details.html', context)
