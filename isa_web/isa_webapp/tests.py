@@ -46,6 +46,14 @@ class AccountTestCase(unittest.TestCase):
         driver = self.driver
         driver.get("http://0.0.0.0:8000/isa_web/createlisting")
 
+        email = driver.find_element_by_id('id_email')
+        password = driver.find_element_by_id('id_password')
+        submit = driver.find_element_by_id('login_button')
+
+        email.send_keys('hank@thehill.com')
+        password.send_keys('password')
+        submit.click()
+
         name = driver.find_element_by_id('id_name')
         description = driver.find_element_by_id('id_description')
         category = driver.find_element_by_id('id_category')
@@ -56,8 +64,8 @@ class AccountTestCase(unittest.TestCase):
 
         name.send_keys('New Shoes')
         description.send_keys('Air Jordan 11')
-        category.SelectByValue('1')
-        condition.SelectByValue('5')
+        #category.SelectByValue('1')
+        #condition.SelectByValue('5')
         price.send_keys('100')
         stock.send_keys('1')
 
@@ -69,7 +77,7 @@ class AccountTestCase(unittest.TestCase):
         driver = self.driver
         driver.get("http://0.0.0.0:8000/isa_web/search")
 
-        search = driver.find_element_by_name('search_query')
+        search = driver.find_element_by_id('search_field')
         submit = driver.find_element_by_id('search_button')
 
         search.send_keys('new')
