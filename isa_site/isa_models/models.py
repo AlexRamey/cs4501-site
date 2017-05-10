@@ -107,6 +107,6 @@ class OrderForm(ModelForm):
         fields = ['product_snapshot', 'order_date', 'delivery_method', 'tracking_number', 'status',
                    'seller', 'buyer', 'completed', 'buyer_rating', 'seller_rating']
 
-class Recommendations(models.Model):
-    item_id = models.ForeignKey(Product, on_delete=models.PROTECT)
-    recommended_items = models.TextField(null=True)
+class Recommendation(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    recommended_items = models.TextField(blank=True)

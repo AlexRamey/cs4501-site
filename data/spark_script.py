@@ -12,10 +12,11 @@ def convert_list_to_tuple(input_tuple):
 	return tuple_list
 
 
-sc = SparkContext("spark://spark-master:7077", "PopularItems")
+sc = SparkContext("spark://spark-master:7077", "Recommendations")
 
-data = sc.textFile("/tmp/data/access.log", 2)     # each worker loads a piece of the data file
-pairs = data.map(lambda line: tuple(line.split("\t")))   # tell each worker to split each line of it's partition
+#data = sc.textFile("/tmp/data/access.log", 2)     # each worker loads a piece of the data file
+data = sc.textFile("/tmp/data/access_log_test.txt", 2)   
+pairs = data.map(lambda line: tuple(line.split(",")))   # tell each worker to split each line of it's partition
 														# Due to unhashable list error, had to convert to tuple
 
 grouped_pairs = pairs.distinct().groupByKey().mapValues(list)	#Grouped by user id with list of products viewed
@@ -36,31 +37,37 @@ group_by_tuple = group_user_pair_tuple.map(lambda s: reversed(s)).groupByKey().m
 # Convert value of all tuples to be size rather than the list itself and only include ones with size > 3
 group_by_tuple_size = group_by_tuple.map(lambda s: (s[0], len(s[1]))).filter(lambda s: s[1] > 2)
 
-
-# print("Hello")
-# print(group_by_tuple.collect())
-# print("HELLO!")
-
-output = group_by_tuple_size.collect()                          # bring the data back to the master node so we can print it out
-for user_id, count in output:
-    print ("user_id %s count %d" % (user_id, count))
-print ("Popular items done")
-
-
 # DATABASE STUFF
-# db = MySQLdb.connect(db="cs4501", host="db", user="www", passwd="$3cureUS")
-# cur = db.cursor()
-# cur.execute("DELETE FROM Recommendations")
+output = group_by_tuple_size.collect()                          # bring the data back to the master node so we can print it out
+# for coview, count in output:
+# 	print ("coview %s count %d" % (coview, count))
+# print ("Recommendations done")
 
-for tuple_list, count in output:
-	first_element = tuple_list[0]
-	second_element = tuple_list[1]
+recommendations = {}
+for coview, count in output:
+	item_one = int(coview[0])
+	item_two = int(coview[1])
 
-	# SQL QUERY. CHECK TO SEE IF FIRST ELEMENT IS IN DATABASE
-	# IF IT IS, APPEND TO JSON STRING, IF NOT INSERT NEW ROW
+	if recommendations.has_key(item_one):
+		recommendations[item_one] += "," + str(item_two)
+	else:
+		recommendations[item_one] = str(item_two)
 
-	# SQL QUERY. CHECK TO SEE IF SECOND ELEMENT IS IN DATABASE
-	# IF IT IS, APPEND TO JSON STRING, IF NOT INSERT NEW ROW
+	if recommendations.has_key(item_two):
+		recommendations[item_two] += "," + str(item_one)
+	else:
+		recommendations[item_two] = str(item_one)
 
+keys = recommendations.keys()
+values = []
+for key in keys:
+	values.append((key, recommendations[key]))
+
+db = MySQLdb.connect(db="cs4501", host="db", user="www", passwd="$3cureUS")
+cur = db.cursor()
+cur.execute("DELETE FROM isa_models_recommendation")
+cur.executemany("INSERT INTO isa_models_recommendation (product_id, recommended_items) VALUES (%s, %s)", values)
+db.commit()
+cur.close()
 
 sc.stop()

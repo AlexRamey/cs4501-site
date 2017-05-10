@@ -107,6 +107,8 @@ spark-master:
     - 8080:8080
   volumes:
     - ./data:/tmp/data
+  external_links:
+    - mysql:db
 
 spark-worker:
   image: gettyimages/spark
