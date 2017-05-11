@@ -1230,7 +1230,7 @@
         "action_flag": 2,
         "change_message": "[{\"changed\": {\"fields\": [\"sold\"]}}]"
     }
-}
+},
 {
     "model": "isa_models.recommendation",
     "pk": 1,
@@ -1254,5 +1254,5 @@
         "product": 4,
         "recommended_items": "2"
     }
-},
+}
 ]
