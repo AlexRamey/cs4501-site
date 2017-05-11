@@ -5,6 +5,7 @@ from .views import orders, order
 from .views import productsnapshots, productsnapshot
 from .views import conditions, condition
 from .views import categories, category, category_products
+from .views import recommendation
 
 from . import home
 
@@ -29,4 +30,5 @@ urlpatterns = [
     url(r'^categories/(?P<category_id>\d+)/products/$', category_products, name="category_products"),
     url(r'^authenticators/$', authenticators, name = "authenticators"),
     url(r'^login/$', login, name="login"),
+    url(r'^recommendation/(?P<product_id>\d+)/$', recommendation, name="recommendation"),
 ]

@@ -61,6 +61,17 @@ def productdetails(request, id):
     resp = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/productdetails/' +id+ '/' + extra_arg)
     context['response'] = resp
 
+    # Get the recommendations to display!
+    recom_info = []
+    recommendations = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/recommendation/' +id+ '/')
+    if recommendations["response"] == "success" and len(recommendations["data"]) > 0:
+        recommendations = recommendations["data"][0]["fields"]["recommended_items"].split(",")
+        for recom in recommendations:
+            item = getJsonReponseObject('http://exp-api:8000/isa_experience/api/v1/productdetails/' +recom+ '/')
+            if item["response"] == "success":
+                recom_info.append(item["data"][0])
+    context['recom_info'] = recom_info
+
     return render(request, 'isa_webapp/product_details.html', context)
 
 @login_required

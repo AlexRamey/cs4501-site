@@ -224,6 +224,10 @@ def editlisting(request, id):
 
         return JsonResponse(listingResponse)
 
+def recommendation(request, product_id):
+    recommendationResponse = getJsonReponseObject('http://models-api:8000/isa_models/api/v1/recommendation/' + product_id)
+    return JsonResponse(recommendationResponse)
+
 # HELPER METHODS
 def getJsonReponseObject(url, method="GET", data=None):
     req = urllib.request.Request(url, method=method, data=data)

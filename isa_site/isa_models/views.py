@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
-from isa_models.models import User, UserForm, Authenticator, Category, CategoryForm, Condition, ConditionForm, Product, ProductForm, ProductSnapshot, ProductSnapshotForm, Order, OrderForm
+from isa_models.models import User, UserForm, Authenticator, Category, CategoryForm, Condition, ConditionForm, Product, ProductForm, ProductSnapshot, ProductSnapshotForm, Order, OrderForm, Recommendation
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.hashers import check_password, make_password
@@ -156,6 +156,9 @@ def user_selling(request, seller_id):
 
 def category_products(request, category_id):
     return data_json_response(Product.objects.all().filter(category = category_id))
+
+def recommendation(request, product_id):
+    return data_json_response(Recommendation.objects.all().filter(product = product_id))
 
 # HELPER METHODS
 def data_json_response(list_of_objects):

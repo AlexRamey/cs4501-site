@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import index, search_results, hot_items, new_posts, product_details, user_profile, createaccount, login, createlisting, editlisting
+from .views import index, search_results, hot_items, new_posts, product_details, user_profile, createaccount, login, createlisting, editlisting, recommendation
 
 urlpatterns = [
     url(r'^$', index, name='index'),
@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^login/$', login),
     url(r'^createlisting/$', createlisting),
     url(r'^editlisting/(?P<id>\d+)/$',editlisting),
+    url(r'^recommendation/(?P<product_id>\d+)/$', recommendation),
 ]

@@ -44,6 +44,29 @@
 
     	<p>{{response.data.0.fields.seller.fields.seller_rating}}</p>
     </div>
+
+    <div style="text-align:left;">
+        {% if recom_info|length > 0 %}
+          <h2>Recommendations</h2>
+        {% else %}
+            <h2>No Recommendations</h2>
+        {% endif %}
+    </div>
+    <div class = "row">
+        {% for item in recom_info %}
+            <div class="col-xs-6 hero-feature">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>{{item.fields.name}}</h3>
+                        <p>{{item.fields.name}}</p>
+                            <a class="btn btn-default" href="{% url 'product' item.pk %}">View Details</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
 {% endif %}
 </body>
 {% endblock %}
