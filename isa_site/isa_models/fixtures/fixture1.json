@@ -1231,4 +1231,28 @@
         "change_message": "[{\"changed\": {\"fields\": [\"sold\"]}}]"
     }
 }
+{
+    "model": "isa_models.recommendation",
+    "pk": 1,
+    "fields": {
+        "product": 2,
+        "recommended_items": "3,4"
+    }
+},
+{
+    "model": "isa_models.recommendation",
+    "pk": 2,
+    "fields": {
+        "product": 3,
+        "recommended_items": "2"
+    }
+},
+{
+    "model": "isa_models.recommendation",
+    "pk": 3,
+    "fields": {
+        "product": 4,
+        "recommended_items": "2"
+    }
+},
 ]
