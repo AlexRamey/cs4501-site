@@ -387,4 +387,24 @@ class GetTestAuthenticator(TestCase):
     def test_failure_login(self):
         response = self.client.post(reverse('login'), {'email' : "hank@thehill.com", 'password' : "WRONGpassword"})
         response = response.json()
-        self.assertEquals(response['response'], 'failure') 
+        self.assertEquals(response['response'], 'failure')
+
+class GetTestRecommendation(TestCase):
+    fixtures = ["fixture1.json"]
+
+    def setUp(self):
+        self.client = Client()
+        
+    def test_recommendations_exist(self):
+        response = self.client.get(reverse('recommendation', kwargs={'product_id': 2}))
+        response = response.json()
+        self.assertEquals(response['response'], 'success')
+        self.assertTrue(isinstance(response['data'], list))
+        self.assertTrue(len(response['data']) == 1)
+
+    def test_recommendations_do_not_exist(self):
+        response = self.client.get(reverse('recommendation', kwargs={'product_id': 1}))
+        response = response.json()
+        self.assertEquals(response['response'], 'success')
+        self.assertTrue(isinstance(response['data'], list))
+        self.assertTrue(len(response['data']) == 0)
