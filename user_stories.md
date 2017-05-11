@@ -40,3 +40,12 @@
 6. As a seller, I wish to be able to update a listing in case any information changes
 7. As a seller, I wish to be able to remove/delete a listing in case the product no longer exists anymore
 8. As a seller, I wish to be able to see my most recently listed products on home page (if I am logged in)
+
+## Search (Iteration 5)
+
+1. As a buyer, I want to be able to search all possible listings that I can buy
+2. As a seller, I want to be able to create a listing for a product I want to sell
+
+## Recommendations (Iteration 7)
+
+1. As a buyer, I want the site to recommend relevant items to me based on the product page I'm currently looking at.

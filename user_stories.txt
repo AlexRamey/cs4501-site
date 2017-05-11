@@ -43,3 +43,7 @@ Search (iteration 5)
 
 As a buyer, I want to be able to search all possible listings that I can buy
 As a seller, I want to be able to create a listing for a product I want to sell
+
+Recommendations(Iteration 7)
+
+As a buyer, I want the site to recommend relevant items to me based on the product page I'm currently looking at.
